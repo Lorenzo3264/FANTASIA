@@ -43,7 +43,7 @@ public class FANTASIA : ModuleRules
 
 		bEnableExceptions = true;
 
-		PublicIncludePaths.AddRange(
+        PublicIncludePaths.AddRange(
 			new string[] {
 				// ... add public include paths required here ...
 			}
@@ -64,9 +64,9 @@ public class FANTASIA : ModuleRules
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
-			
-		
-		PrivateDependencyModuleNames.AddRange(
+
+
+        PrivateDependencyModuleNames.AddRange(
 			new string[]
 			{
 				"CoreUObject",
@@ -76,14 +76,24 @@ public class FANTASIA : ModuleRules
 				"Voice",
 				"Json",
 				"JsonUtilities",
-				"HTTP",
-				"UnrealEd",
-				"AssetTools",
+                "HTTP"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);
 
-		string ModulePath = ModuleDirectory;
+        if (Target.Type == TargetRules.TargetType.Editor)
+        {
+            PrivateDependencyModuleNames.AddRange(
+				new string[]
+				{
+					"UnrealEd",
+					"AssetTools"
+				}
+			);
+        }
+
+
+        string ModulePath = ModuleDirectory;
 		string ThirdParty = Path.GetFullPath(Path.Combine(ModulePath, "../../ThirdParty/"));
 
 		string LibraryPath = Path.Combine(ThirdParty, "Microsoft.CognitiveServices.Speech.1.5.1", "build", "native", "x64", "Release");
@@ -114,7 +124,7 @@ public class FANTASIA : ModuleRules
 
 		PublicIncludePaths.Add(Path.Combine(ThirdParty, "kdepp"));
 
-		//CppStandard = CppStandardVersion.Latest;
+//		CppStandard = CppStandardVersion.Latest;
 
 		LoadAgrum(Target, ThirdParty);
 

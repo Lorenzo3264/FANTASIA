@@ -17,10 +17,6 @@
 #include "agrum/BN/inference/variableElimination.h"
 
 #include "MathUtilities.h"
-
-
-#include "Factories/Factory.h"
-#include "AssetTypeActions_Base.h"
 #include "BayesianNetwork.generated.h"
 
 USTRUCT(BlueprintType)
@@ -41,6 +37,7 @@ enum class InferenceAlgs : uint8
 	ShaferShenoy UMETA(DisplayName = "Shafer Shenoy Inference"),
 	VariableElimination UMETA(DisplayName = "Variable Elimination")
 };
+
 
 USTRUCT(Blueprintable)
 struct FBayesianArcStruct
@@ -72,25 +69,6 @@ struct FBayesianNodeStruct
 	TArray<FString> parents;
 };
 
-class FANTASIA_API FBayesianNetworkActions : public FAssetTypeActions_Base
-{
-public:
-
-	FText GetName() const;
-	FColor GetTypeColor() const;
-	};
-
-UCLASS()
-class FANTASIA_API UBayesianNetworkFactory : public UFactory
-{
-	GENERATED_BODY()
-public:
-	UBayesianNetworkFactory(const FObjectInitializer& ObjectInitializer);
-	virtual UObject* FactoryCreateNew(UClass* InClass, UObject* InParent, FName InName, EObjectFlags Flags, UObject* Context, FFeedbackContext* Warn) override;
-	virtual bool FactoryCanImport(const FString& Filename) override;
-	//virtual UObject* FactoryCreateBinary(UClass* InClass, UObject* InParent, FName InName, EObjectFlags Flags, const FString& Filename, const TCHAR* Parms, FFeedbackContext* Warn, bool& bOutOperationCanceled) ;
-	virtual UObject* FactoryCreateFile(UClass* InClass, UObject* InParent, FName InName, EObjectFlags Flags, const FString& Filename, const TCHAR* Parms, FFeedbackContext* Warn, bool& bOutOperationCanceled);
-};
 
 UCLASS(Blueprintable, BlueprintType)
 class FANTASIA_API UBayesianNetwork : public UObject

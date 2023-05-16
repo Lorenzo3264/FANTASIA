@@ -21,6 +21,7 @@ std::vector<float> myLinspace(float start, float end, int points)
 	}
 
 	return res;
+
 }
 
 UBayesianNetwork::UBayesianNetwork(const FObjectInitializer& ObjectInitializer)
@@ -43,7 +44,6 @@ void UBayesianNetwork::Init() {
 	}
 }
 
-
 void UBayesianNetwork::makeInference()
 {
 	try {
@@ -53,7 +53,6 @@ void UBayesianNetwork::makeInference()
 	catch (gum::NotFound& e)
 		UE_LOG(LogTemp, Warning, TEXT("%hs from %hs"), e.errorType().c_str(), e.errorContent().c_str());
 }
-
 
 TMap<FString, float> UBayesianNetwork::getPosterior(FString variable)
 {
@@ -77,7 +76,6 @@ TMap<FString, float> UBayesianNetwork::getPosterior(FString variable)
 void UBayesianNetwork::writeBIF(FString file)
 {
 	auto writer = gum::BIFWriter<double>();
-
 	writer.write(TCHAR_TO_UTF8(*file), bn);
 }
 
@@ -237,50 +235,5 @@ double UBayesianNetwork::getEntropy(FString variable)
 	if (!variable.IsEmpty())
 		return (float) inference->H(TCHAR_TO_UTF8(*variable));
 	return 0;
-}
-
-FText FBayesianNetworkActions::GetName() const
-{
-	return NSLOCTEXT("AssetTypeActions", "AssetTypeActions_BayesianNetwork", "Bayesian Network");
-}
-
-FColor FBayesianNetworkActions::GetTypeColor() const
-{
-	return FColor::White;
-}
-
-UBayesianNetworkFactory::UBayesianNetworkFactory(const FObjectInitializer& ObjectInitializer)
-: Super(ObjectInitializer)
-{
-	Formats.Add(FString(TEXT("bif;")) + NSLOCTEXT("UBayesianNetworkFactory", "FormatBif", "Bayesian Network File").ToString());
-
-	bCreateNew = false;
-	bText = false;
-	bEditorImport = true;
-	bEditAfterNew = false;
-	SupportedClass = UBayesianNetwork::StaticClass();
-}
-
-UObject* UBayesianNetworkFactory::FactoryCreateNew(UClass* InClass, UObject* InParent, FName InName, EObjectFlags Flags, UObject* Context, FFeedbackContext* Warn)
-{
-	UBayesianNetwork* BNAsset = NewObject<UBayesianNetwork>(InParent, InClass, InName, Flags);
-	return BNAsset;
-}
-
-bool UBayesianNetworkFactory::FactoryCanImport(const FString& Filename)
-{
-	const FString Extension = FPaths::GetExtension(Filename);
-
-	if (Extension == TEXT("bif"))
-		return true;
-	return false;
-}
-
-UObject* UBayesianNetworkFactory::FactoryCreateFile(UClass* InClass, UObject* InParent, FName InName, EObjectFlags Flags, const FString& Filename, const TCHAR* Parms, FFeedbackContext* Warn, bool& bOutOperationCanceled)
-{
-	UBayesianNetwork* bnObject = NewObject<UBayesianNetwork>(InParent, InClass, InName, Flags);
-
-	bnObject->setBN(Filename);
-	return bnObject;
 }
 
