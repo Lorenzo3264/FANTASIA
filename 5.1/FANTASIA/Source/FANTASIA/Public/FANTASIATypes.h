@@ -36,7 +36,7 @@ struct FTTSTimedStruct
 	GENERATED_USTRUCT_BODY()
 
 	UPROPERTY(BlueprintReadWrite)
-	int time;
+	int time = 0;
 
 	UPROPERTY(BlueprintReadWrite)
 	FString data;
@@ -85,7 +85,7 @@ struct FNLUResponse {
 		FString topIntent;
 
 	UPROPERTY(BlueprintReadOnly)
-		float score;
+		float score = 0;
 
 	UPROPERTY(BlueprintReadWrite)
 		TArray<UNLUEntity*> entities;
