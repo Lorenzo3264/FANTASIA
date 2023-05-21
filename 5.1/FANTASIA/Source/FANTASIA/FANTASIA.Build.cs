@@ -124,7 +124,7 @@ public class FANTASIA : ModuleRules
 
 		PublicIncludePaths.Add(Path.Combine(ThirdParty, "kdepp"));
 
-//		CppStandard = CppStandardVersion.Latest;
+		CppStandard = CppStandardVersion.Cpp20;
 
 		LoadAgrum(Target, ThirdParty);
 
