@@ -77,7 +77,6 @@ void UInfluenceDiag::eraseEvidence(FString variable)
 	inference->eraseEvidence(TCHAR_TO_UTF8(*variable));
 }
 
-
 void UInfluenceDiag::addDiscretizedVariable(FString variable, FString description, float minTick, float maxTick, float nPoints, InfluenceNodeType nodeType)
 {
 	if (!nodeNames.Contains(variable)) 
@@ -108,10 +107,11 @@ void UInfluenceDiag::addLabelizedVariable(FString variable, FString description,
 		gum::LabelizedVariable newNode(TCHAR_TO_UTF8(*variable), TCHAR_TO_UTF8(*description), 0);
 		nodeNames.Add(variable);
 		nodeDescriptions.Add(variable, description);
+
+		// TODO: add labels if labels vector is not empty
 	}
 }
 
-// Duplicate code (in BayesianNetwork.cpp)
 void UInfluenceDiag::addArc(FString parent, FString child)
 {
 	FString newArc = parent + "_" + child;
@@ -128,15 +128,33 @@ void UInfluenceDiag::addArc(FString parent, FString child)
 		UE_LOG(LogTemp, Warning, TEXT("%hs from %hs while adding arc"), e.errorType().c_str(), e.errorContent().c_str());
 }
 
-// Duplicate code (in BayesianNetwork.cpp)
-void UInfluenceDiag::fillWith(FString variable, float value)
+void UInfluenceDiag::fillCPT(FString variable, TArray<float> values)
 {
+	std::vector<double> cptValues;
+	for (float value : values)
+		cptValues.push_back(value);
+
 	try {
-		id.cpt(TCHAR_TO_UTF8(*variable)).fillWith(value);
+		id.cpt(TCHAR_TO_UTF8(*variable)).fillWith(cptValues);
 	}
 	catch (gum::NotFound& e)
 		UE_LOG(LogTemp, Warning, TEXT("%hs from %hs while filling"), e.errorType().c_str(), e.errorContent().c_str());
 }
+
+void UInfluenceDiag::fillUtility(FString variable, TArray<float> values)
+{
+	// TODO: add utility node check
+	std::vector<double> utilityValues;
+	for (float value : values)
+		utilityValues.push_back(value);
+
+	try {
+		id.utility(TCHAR_TO_UTF8(*variable)).fillWith(utilityValues);
+	}
+	catch (gum::NotFound& e)
+		UE_LOG(LogTemp, Warning, TEXT("%hs from %hs while filling"), e.errorType().c_str(), e.errorContent().c_str());
+}
+
 
 // TO TEST
 void UInfluenceDiag::writeBIFXML(FString file)

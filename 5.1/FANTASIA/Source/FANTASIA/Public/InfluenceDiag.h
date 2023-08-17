@@ -120,8 +120,11 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "addArc"), Category = "Influence_Diagram")
 	void addArc(FString parent, FString child);
 
-	UFUNCTION(BlueprintCallable, meta = (DisplayName = "fillWith"), Category = "Influence_Diagram")
-	void fillWith(FString variable, float value);
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "fillCPT"), Category = "Influence_Diagram")
+	void fillCPT(FString variable, TArray<float> values);
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "fillUtility"), Category = "Influence_Diagram")
+	void fillUtility(FString variable, TArray<float> values);
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "writeBIF"), Category = "Influence_Diagram")
 	void writeBIFXML(FString file);
