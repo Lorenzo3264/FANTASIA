@@ -92,7 +92,7 @@ public:
 
 	// Read ID from a BIFXML file
 	//void setID(const FString& Filename);
-	
+
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "Init"), Category = "Influence_Diagram")
 	void Init();
 
@@ -111,11 +111,13 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "eraseEvidence"), Category = "Influence_Diagram")
 	void eraseEvidence(FString variable);
 
+	/*
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "addDiscretizedVariable"), Category = "Influence_Diagram")
 	void addDiscretizedVariable(FString variable, FString description, float minTick, float maxTick, float nPoints, InfluenceNodeType nodeType);
+	*/
 
-	UFUNCTION(BlueprintCallable, meta = (DisplayName = "addLabelizedVariable"), Category = "Influence_Diagram")
-	void addLabelizedVariable(FString variable, FString description, TArray<FString> labels);
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "addNode"), Category = "Influence_Diagram")
+	void addNode(FString variable, FString description, TArray<FString> labels, InfluenceNodeType nodeType);
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "addArc"), Category = "Influence_Diagram")
 	void addArc(FString parent, FString child);
@@ -135,6 +137,4 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "idFromName"), Category = "Influence_Diagram")
 	int idFromName(FString variable);
 
-	// UFunction to set utility
-	// UFunction to show optimal decision based upon MEU
 };

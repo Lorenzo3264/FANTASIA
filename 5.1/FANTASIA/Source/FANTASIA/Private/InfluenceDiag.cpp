@@ -77,6 +77,7 @@ void UInfluenceDiag::eraseEvidence(FString variable)
 	inference->eraseEvidence(TCHAR_TO_UTF8(*variable));
 }
 
+/*
 void UInfluenceDiag::addDiscretizedVariable(FString variable, FString description, float minTick, float maxTick, float nPoints, InfluenceNodeType nodeType)
 {
 	if (!nodeNames.Contains(variable)) 
@@ -98,9 +99,9 @@ void UInfluenceDiag::addDiscretizedVariable(FString variable, FString descriptio
 		nodeDescriptions.Add(variable, description);
 	}
 }
+*/
 
-// Duplicate code (in BayesianNetwork.cpp)
-void UInfluenceDiag::addLabelizedVariable(FString variable, FString description, TArray<FString> labels)
+void UInfluenceDiag::addNode(FString variable, FString description, TArray<FString> labels, InfluenceNodeType nodeType)
 {
 	if (!nodeNames.Contains(variable))
 	{
@@ -108,7 +109,15 @@ void UInfluenceDiag::addLabelizedVariable(FString variable, FString description,
 		nodeNames.Add(variable);
 		nodeDescriptions.Add(variable, description);
 
-		// TODO: add labels if labels vector is not empty
+		for (FString label : labels)
+			newNode.addLabel(TCHAR_TO_UTF8(*label));
+
+		switch (nodeType) {
+		case InfluenceNodeType::NORMAL: id.add(newNode); break;
+		case InfluenceNodeType::CHANCE: id.addChanceNode(newNode); break;
+		case InfluenceNodeType::UTILITY: id.addUtilityNode(newNode); break;
+		case InfluenceNodeType::DECISION: id.addDecisionNode(newNode); break;
+		}
 	}
 }
 
