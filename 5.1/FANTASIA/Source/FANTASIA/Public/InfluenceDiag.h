@@ -102,6 +102,12 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "getPosterior", Keywords = "Inference", AutoCreateRefTerm = "evidences"), Category = "Influence_Diagram")
 	TMap<FString, float> getPosterior(FString variable);
 
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "getPosteriorUtility", Keywords = "Inference", AutoCreateRefTerm = "evidences"), Category = "Influence_Diagram")
+	TMap<FString, float> getPosteriorUtility(FString variable);
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "getMEU", Keywords = "Inference", AutoCreateRefTerm = "evidences"), Category = "Influence_Diagram")
+	TMap<FString, float> getMEU(FString variable);
+
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "addEvidence"), Category = "Influence_Diagram")
 	void addEvidence(FString variable, TArray<float> data);
 

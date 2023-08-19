@@ -21,7 +21,6 @@ void UInfluenceDiag::Init()
 	}
 }
 
-// Duplicate code (in BayesianNetwork.cpp)
 void UInfluenceDiag::makeInference()
 {
 	try {
@@ -31,7 +30,6 @@ void UInfluenceDiag::makeInference()
 		UE_LOG(LogTemp, Warning, TEXT("%hs from %hs"), e.errorType().c_str(), e.errorContent().c_str());
 }
 
-// Duplicate code (in BayesianNetwork.cpp)
 TMap<FString, float> UInfluenceDiag::getPosterior(FString variable)
 {
 	const std::string nodeName(TCHAR_TO_UTF8(*variable));
@@ -51,7 +49,41 @@ TMap<FString, float> UInfluenceDiag::getPosterior(FString variable)
 	return out;
 }
 
-// Duplicate code (in BayesianNetwork.cpp)
+TMap<FString, float> UInfluenceDiag::getPosteriorUtility(FString variable)
+{
+	const std::string nodeName(TCHAR_TO_UTF8(*variable));
+	TMap<FString, float> out;
+	unsigned int j;
+
+	try {
+		gum::Potential<double> result = inference->posteriorUtility(nodeName);
+		gum::Instantiation inst(result);
+
+		for (inst.setFirst(), j = 0; !inst.end(); ++inst, ++j)
+			out.Add(FString(result.variable(0).label(j).c_str()), result.get(inst));
+	}
+	catch (gum::NotFound& e)
+		UE_LOG(LogTemp, Warning, TEXT("%hs from %hs"), e.errorType().c_str(), e.errorContent().c_str());
+
+	return out;
+}
+
+TMap<FString, float> UInfluenceDiag::getMEU(FString variable)
+{
+	TMap<FString, float> out;
+
+	try {
+		std::pair MEU = inference->MEU();
+
+		out.Add("MEU", MEU.first);
+		out.Add("Variance", MEU.second);
+	}
+	catch (gum::OperationNotAllowed& e)
+		UE_LOG(LogTemp, Warning, TEXT("%hs from %hs"), e.errorType().c_str(), e.errorContent().c_str());
+
+	return out;
+}
+
 void UInfluenceDiag::addEvidence(FString variable, TArray<float> data)
 {
 	std::vector<double> vec;
@@ -65,13 +97,11 @@ void UInfluenceDiag::addEvidence(FString variable, TArray<float> data)
 	inference->addEvidence(var, vec);
 }
 
-// Duplicate code (in BayesianNetwork.cpp)
 void UInfluenceDiag::eraseAllEvidence()
 {
 	inference->eraseAllEvidence();
 }
 
-// Duplicate code (in BayesianNetwork.cpp)
 void UInfluenceDiag::eraseEvidence(FString variable)
 {
 	inference->eraseEvidence(TCHAR_TO_UTF8(*variable));
@@ -164,7 +194,6 @@ void UInfluenceDiag::fillUtility(FString variable, TArray<float> values)
 		UE_LOG(LogTemp, Warning, TEXT("%hs from %hs while filling"), e.errorType().c_str(), e.errorContent().c_str());
 }
 
-
 // TO TEST
 void UInfluenceDiag::writeBIFXML(FString file)
 {
@@ -172,7 +201,7 @@ void UInfluenceDiag::writeBIFXML(FString file)
 	writer.write(TCHAR_TO_UTF8(*file), id);
 }
 
-// TO TEST, duplicate code (in BayesianNetwork.cpp)
+// TO TEST
 void UInfluenceDiag::erase(FString variable)
 {
 	const std::string nodeName(TCHAR_TO_UTF8(*variable));
@@ -191,7 +220,6 @@ void UInfluenceDiag::erase(FString variable)
 	nodeDescriptions.Remove(variable);
 }
 
-// Duplicate code (in BayesianNetwork.cpp)
 int UInfluenceDiag::idFromName(FString variable)
 {
 	return id.idFromName(TCHAR_TO_UTF8(*variable));
