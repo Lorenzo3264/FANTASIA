@@ -160,4 +160,10 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "idFromName"), Category = "Influence_Diagram")
 	int idFromName(FString variable);
 
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "decisionOrderExists"), Category = "Influence_Diagram")
+	bool decisionOrderExists();
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "decisionOrder"), Category = "Influence_Diagram")
+	TArray<int> decisionOrder();
+
 };

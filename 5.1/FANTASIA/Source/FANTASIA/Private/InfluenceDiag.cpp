@@ -268,3 +268,20 @@ int UInfluenceDiag::idFromName(FString variable)
 {
 	return id.idFromName(TCHAR_TO_UTF8(*variable));
 }
+
+bool UInfluenceDiag::decisionOrderExists()
+{
+	return id.decisionOrderExists();
+}
+
+TArray<int> UInfluenceDiag::decisionOrder()
+{
+	TArray<int> out;
+	std::vector<gum::NodeId> decisionSequence;
+	decisionSequence = id.decisionOrder();
+	
+	for (gum::NodeId idx : decisionSequence)
+		out.Add(idx);
+
+	return out;
+}
