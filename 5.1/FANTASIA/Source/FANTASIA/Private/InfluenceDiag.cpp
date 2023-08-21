@@ -55,20 +55,21 @@ TMap<FString, float> UInfluenceDiag::getPosteriorUtility(FString variable)
 	TMap<FString, float> out;
 	unsigned int j;
 
-	try {
-		gum::Potential<double> result = inference->posteriorUtility(nodeName);
-		gum::Instantiation inst(result);
+	if (id.isUtilityNode(nodeName)) {
+		try {
+			gum::Potential<double> result = inference->posteriorUtility(nodeName);
+			gum::Instantiation inst(result);
 
-		for (inst.setFirst(), j = 0; !inst.end(); ++inst, ++j)
-			out.Add(FString(result.variable(0).label(j).c_str()), result.get(inst));
+			for (inst.setFirst(), j = 0; !inst.end(); ++inst, ++j)
+				out.Add(FString(result.variable(0).label(j).c_str()), result.get(inst));
+		}
+		catch (gum::NotFound& e)
+			UE_LOG(LogTemp, Warning, TEXT("%hs from %hs"), e.errorType().c_str(), e.errorContent().c_str());
 	}
-	catch (gum::NotFound& e)
-		UE_LOG(LogTemp, Warning, TEXT("%hs from %hs"), e.errorType().c_str(), e.errorContent().c_str());
-
 	return out;
 }
 
-TMap<FString, float> UInfluenceDiag::getMEU(FString variable)
+TMap<FString, float> UInfluenceDiag::getMEU()
 {
 	TMap<FString, float> out;
 
@@ -213,39 +214,44 @@ void UInfluenceDiag::addArc(FString parent, FString child)
 
 void UInfluenceDiag::fillCPT(FString variable, TArray<float> values)
 {
-	std::vector<double> cptValues;
-	for (float value : values)
-		cptValues.push_back(value);
+	const std::string nodeName(TCHAR_TO_UTF8(*variable));
 
-	try {
-		id.cpt(TCHAR_TO_UTF8(*variable)).fillWith(cptValues);
+	if (!id.isUtilityNode(nodeName)) {
+		std::vector<double> cptValues;
+		for (float value : values)
+			cptValues.push_back(value);
+
+		try {
+			id.cpt(nodeName).fillWith(cptValues);
+		}
+		catch (gum::NotFound& e)
+			UE_LOG(LogTemp, Warning, TEXT("%hs from %hs while filling"), e.errorType().c_str(), e.errorContent().c_str());
 	}
-	catch (gum::NotFound& e)
-		UE_LOG(LogTemp, Warning, TEXT("%hs from %hs while filling"), e.errorType().c_str(), e.errorContent().c_str());
 }
 
 void UInfluenceDiag::fillUtility(FString variable, TArray<float> values)
 {
-	// TODO: add utility node check
-	std::vector<double> utilityValues;
-	for (float value : values)
-		utilityValues.push_back(value);
+	const std::string nodeName(TCHAR_TO_UTF8(*variable));
 
-	try {
-		id.utility(TCHAR_TO_UTF8(*variable)).fillWith(utilityValues);
+	if (id.isUtilityNode(nodeName)) {
+		std::vector<double> utilityValues;
+		for (float value : values)
+			utilityValues.push_back(value);
+
+		try {
+			id.utility(nodeName).fillWith(utilityValues);
+		}
+		catch (gum::NotFound& e)
+			UE_LOG(LogTemp, Warning, TEXT("%hs from %hs while filling"), e.errorType().c_str(), e.errorContent().c_str());
 	}
-	catch (gum::NotFound& e)
-		UE_LOG(LogTemp, Warning, TEXT("%hs from %hs while filling"), e.errorType().c_str(), e.errorContent().c_str());
 }
 
-// TO TEST
 void UInfluenceDiag::writeBIFXML(FString file)
 {
 	auto writer = gum::BIFXMLIDWriter<double>();
 	writer.write(TCHAR_TO_UTF8(*file), id);
 }
 
-// TO TEST
 void UInfluenceDiag::erase(FString variable)
 {
 	const std::string nodeName(TCHAR_TO_UTF8(*variable));

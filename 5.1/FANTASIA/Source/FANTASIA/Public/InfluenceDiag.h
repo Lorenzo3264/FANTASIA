@@ -120,7 +120,7 @@ public:
 	TMap<FString, float> getPosteriorUtility(FString variable);
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "getMEU", Keywords = "Inference", AutoCreateRefTerm = "evidences"), Category = "Influence_Diagram")
-	TMap<FString, float> getMEU(FString variable);
+	TMap<FString, float> getMEU();
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "optimalDecision", Keywords = "Inference", AutoCreateRefTerm = "evidences"), Category = "Influence_Diagram")
 	TMap<FString, FArrayFloat> optimalDecision(FString variable);
@@ -151,7 +151,7 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "fillUtility"), Category = "Influence_Diagram")
 	void fillUtility(FString variable, TArray<float> values);
 
-	UFUNCTION(BlueprintCallable, meta = (DisplayName = "writeBIF"), Category = "Influence_Diagram")
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "writeBIFXML"), Category = "Influence_Diagram")
 	void writeBIFXML(FString file);
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "clear"), Category = "Influence_Diagram")
