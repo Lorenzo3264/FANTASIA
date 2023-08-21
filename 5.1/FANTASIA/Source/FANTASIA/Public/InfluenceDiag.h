@@ -61,6 +61,20 @@ struct FInflueceDiagNodeStruct
 
 	UPROPERTY(EditAnywhere)
 	TArray<FString> parents;
+
+	UPROPERTY(EditAnywhere)
+	InfluenceNodeType nodeType;
+};
+
+USTRUCT(Blueprintable)
+struct FArrayFloat 
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	TArray<float> arrayFloat;
+	
 };
 
 UCLASS(Blueprintable, BlueprintType)
@@ -107,6 +121,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "getMEU", Keywords = "Inference", AutoCreateRefTerm = "evidences"), Category = "Influence_Diagram")
 	TMap<FString, float> getMEU(FString variable);
+
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "optimalDecision", Keywords = "Inference", AutoCreateRefTerm = "evidences"), Category = "Influence_Diagram")
+	TMap<FString, FArrayFloat> optimalDecision(FString variable);
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "addEvidence"), Category = "Influence_Diagram")
 	void addEvidence(FString variable, TArray<float> data);

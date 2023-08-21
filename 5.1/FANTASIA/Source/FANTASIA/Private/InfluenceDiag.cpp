@@ -84,6 +84,50 @@ TMap<FString, float> UInfluenceDiag::getMEU(FString variable)
 	return out;
 }
 
+TMap<FString, FArrayFloat> UInfluenceDiag::optimalDecision(FString variable)
+{
+	TMap<FString, FArrayFloat> out;
+
+	try {
+		gum::Potential<double> result = inference->optimalDecision("VacationActivity");
+
+		auto table = result.content();
+		gum::Instantiation inst(*table);
+
+		const auto& decisionVariable = table->variable(0);
+		const gum::Size nbparents = table->nbrDim() - 1;
+
+		// For each combinations of parents' conditions
+		for (inst.setFirst(); !inst.end(); inst.incNotVar(decisionVariable)) {
+			FString parentsConditions;
+			FArrayFloat optimalChoices;
+
+			if (nbparents > 0) {
+
+				// Collect the combination
+				parentsConditions.Append("|");
+				for (gum::Idx i = 1; i <= nbparents; i++) {
+					FString parentsCondition(table->variable(i).label(inst.val(i)).c_str());
+					parentsConditions.Append(parentsCondition);
+					parentsConditions.Append("|");
+				}
+			}
+
+			// Collect the optimal choices
+			for (inst.setFirstVar(decisionVariable); !inst.end(); inst.incVar(decisionVariable))
+				optimalChoices.arrayFloat.Add(table->get(inst));
+
+			out.Add(parentsConditions, optimalChoices);
+
+			inst.setFirstVar(decisionVariable);
+		}
+	}
+	catch (gum::NotFound& e)
+		UE_LOG(LogTemp, Warning, TEXT("%hs from %hs"), e.errorType().c_str(), e.errorContent().c_str());
+
+	return out;
+}
+
 void UInfluenceDiag::addEvidence(FString variable, TArray<float> data)
 {
 	std::vector<double> vec;
