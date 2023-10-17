@@ -2,6 +2,28 @@
 
 
 #include "InfluenceDiag.h"
+#include <vector>
+
+
+std::vector<float> myIDLinspace(float start, float end, int points)
+{
+	std::vector<float> res(points);
+	float step = (end - start) / (points - 1);
+	int i = 0;
+	float cand;
+
+	for (auto& e : res)
+	{
+		cand = start + step * i++;
+		if (cand < end)
+			e = cand;
+		else
+			e = end;
+	}
+
+	return res;
+
+}
 
 UInfluenceDiag::UInfluenceDiag(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -159,13 +181,12 @@ void UInfluenceDiag::eraseEvidence(FString variable)
 	inference->eraseEvidence(TCHAR_TO_UTF8(*variable));
 }
 
-/*
 void UInfluenceDiag::addDiscretizedVariable(FString variable, FString description, float minTick, float maxTick, float nPoints, InfluenceNodeType nodeType)
 {
 	if (!nodeNames.Contains(variable)) 
 	{
 		gum::DiscretizedVariable<float> newNode(TCHAR_TO_UTF8(*variable), TCHAR_TO_UTF8(*description));
-		std::vector<float> ticks = myLinspace(minTick, maxTick, nPoints);
+		std::vector<float> ticks = myIDLinspace(minTick, maxTick, nPoints);
 
 		for (float i : ticks)
 			newNode.addTick(i);
@@ -181,7 +202,6 @@ void UInfluenceDiag::addDiscretizedVariable(FString variable, FString descriptio
 		nodeDescriptions.Add(variable, description);
 	}
 }
-*/
 
 void UInfluenceDiag::addNode(FString variable, FString description, TArray<FString> labels, InfluenceNodeType nodeType)
 {
