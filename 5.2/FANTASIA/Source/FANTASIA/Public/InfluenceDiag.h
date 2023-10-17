@@ -122,6 +122,9 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "getMEU", Keywords = "Inference", AutoCreateRefTerm = "evidences"), Category = "Influence_Diagram")
 	TMap<FString, float> getMEU();
 
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "getEntropy"), Category = "Influence_Diagram")
+	double getEntropy(FString variable);
+
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "optimalDecision", Keywords = "Inference", AutoCreateRefTerm = "evidences"), Category = "Influence_Diagram")
 	TMap<FString, FArrayFloat> optimalDecision(FString variable);
 

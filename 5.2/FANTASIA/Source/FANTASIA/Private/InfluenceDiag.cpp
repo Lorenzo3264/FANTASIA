@@ -85,6 +85,13 @@ TMap<FString, float> UInfluenceDiag::getMEU()
 	return out;
 }
 
+double UInfluenceDiag::getEntropy(FString variable)
+{
+	if (!variable.IsEmpty())
+		return (float)inference->posterior((TCHAR_TO_UTF8(*variable))).entropy();
+	return 0;
+}
+
 TMap<FString, FArrayFloat> UInfluenceDiag::optimalDecision(FString variable)
 {
 	TMap<FString, FArrayFloat> out;
