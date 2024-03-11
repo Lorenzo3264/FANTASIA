@@ -1,7 +1,10 @@
 #pragma once
-//#include "Core.h"
 #include "FANTASIATypes.h"
 #include <speechapi_cxx.h>
+#include "Http.h"
+#include "Runtime/Json/Public/Json.h"
+#include "Runtime/JsonUtilities/Public/JsonUtilities.h"
+
 
 using namespace std;
 using namespace Microsoft::CognitiveServices::Speech;
@@ -26,23 +29,22 @@ private:
 	shared_ptr<SpeechConfig> TTSConfig;
 	shared_ptr<SpeechSynthesizer> synthesizer;
 
-	FString Language;
-	FString Voice;
-	FString Key;
-	FString Region;
 	FString ssml;
 	FString id;
+	FString Endpoint;
+
+	
 
 public:
 
 	//~~~ Thread Core Functions ~~~
 
 	//Constructor
-	AzureTTSThread(shared_ptr<SpeechConfig> config, FString inLanguage, FString inVoice, FString inKey, FString inRegion, FString inSsml, FString inID);
+	AzureTTSThread(FString inSsml, FString inID, FString Endpoint);
 
 	virtual ~AzureTTSThread();
 
-	static AzureTTSThread* setup(shared_ptr<SpeechConfig> config, FString Language, FString Voice, FString Key, FString Region, FString ssml, FString id);
+	static AzureTTSThread* setup(FString ssml, FString id, FString Endpoint);
 
 	// Begin FRunnable interface.
 	virtual bool Init();
@@ -52,6 +54,8 @@ public:
 
 	void Synthesize();
 
+	void OnHttpResponseReceived(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
+
 	/** Makes sure this thread has stopped properly */
 	void EnsureCompletion();
 
@@ -60,4 +64,6 @@ public:
 
 	FDelegateHandle TTSResultAvailableSubscribeUser(FTTSResultAvailableDelegate& UseDelegate);
 	void TTSResultAvailableUnsubscribeUser(FDelegateHandle DelegateHandle);
+
+	static TSharedPtr<IHttpResponse, ESPMode::ThreadSafe> ExecuteRequest(TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest, float LoopDelay);
 };

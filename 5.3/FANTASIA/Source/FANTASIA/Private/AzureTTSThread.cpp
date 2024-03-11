@@ -1,20 +1,15 @@
 #include "AzureTTSThread.h"
 
 using namespace std;
-using namespace Microsoft::CognitiveServices::Speech;
 
 AzureTTSThread* AzureTTSThread::Runnable = NULL;
 
-AzureTTSThread::AzureTTSThread(shared_ptr<SpeechConfig> config, FString inLanguage, FString inVoice, FString inKey, FString inRegion, FString inSsml, FString inID) : StopTaskCounter(0)
+AzureTTSThread::AzureTTSThread(FString inSsml, FString inID, FString url) : StopTaskCounter(0)
 {
-	TTSConfig = config;
-	Language = inLanguage;
-	Voice = inVoice;
-	Key = inKey;
-	Region = inRegion;
 	ssml = inSsml;
 	id = inID;
 	Thread = FRunnableThread::Create(this, TEXT("AzureTTSThread"), 0, TPri_Normal);
+	Endpoint = url;
 }
 
 AzureTTSThread::~AzureTTSThread() {
@@ -22,11 +17,12 @@ AzureTTSThread::~AzureTTSThread() {
 	Thread = NULL;
 }
 
-AzureTTSThread* AzureTTSThread::setup(shared_ptr<SpeechConfig> config, FString Language, FString Voice, FString Key, FString Region, FString ssml, FString id)
+
+AzureTTSThread* AzureTTSThread::setup(FString ssml, FString id, FString Endpoint)
 {
 	if (!Runnable && FPlatformProcess::SupportsMultithreading())
 	{
-		Runnable = new AzureTTSThread(config, Language, Voice, Key, Region, ssml, id);
+		Runnable = new AzureTTSThread(ssml, id, Endpoint);
 	}
 	return Runnable;
 }
@@ -65,34 +61,47 @@ void AzureTTSThread::Shutdown()
 
 void AzureTTSThread::Synthesize()
 {
-	synthesizer = SpeechSynthesizer::FromConfig(TTSConfig, NULL);
 
-	ssml = "<!--ID=B7267351-473F-409D-9765-754A8EBCDE05;Version=1|{\"VoiceNameToIdMapItems\":[{\"Id\":\"735db598 - 81e2 - 408f - b039 - f7afef686748\",\"Name\":\"Microsoft Server Speech Text to Speech Voice(" + Language + ", " + Voice + ")\",\"VoiceType\":\"StandardVoice\"}]}--><speak xmlns=\"http://www.w3.org/2001/10/synthesis\" xmlns:mstts=\"http://www.w3.org/2001/mstts\" xmlns:emo=\"http://www.w3.org/2009/10/emotionml\" version=\"1.0\" xml:lang=\"" + Language + "\"><voice name=\"Microsoft Server Speech Text to Speech Voice (" + Language + ", " + Voice + ")\">" + ssml + "</voice></speak>";
+	//Http request to CherryPy API
 
-	auto result = synthesizer->SpeakSsmlAsync(std::string(TCHAR_TO_UTF8(*ssml))).get();
+	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
+	Request->OnProcessRequestComplete().BindLambda([this](FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
+		{
+			if (bWasSuccessful && Response.IsValid())
+			{
+				TArray<uint8> ResponseData = Response->GetContent();
 
-	if (result->Reason == ResultReason::SynthesizingAudioCompleted) {
-		FTTSData newData;
+				FTTSData SyntResult;
+				SyntResult.AudioData = ResponseData;
+				SyntResult.ssml = ssml;
 
-		auto stream = AudioDataStream::FromResult(result);
-		uint8_t buffer[1];
+				TTSResultAvailable.Broadcast(SyntResult, id);
 
-		while (stream->CanReadData(1)) {
-			stream->ReadData(buffer, 1);
-			newData.AudioData.Add((uint8)buffer[0]);
-		}
+			}
+			else
+			{
+				// Gestione errori
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Richiesta non riuscita o risposta non valida");
+			}
+		});
+	Request->SetURL(Endpoint);
+	Request->SetVerb("POST");
+	Request->SetHeader("Content-Type", "application/x-www-form-urlencoded");
+	FString Content = "line=";
+	Content = Content + ssml;
+	Request->SetContentAsString(Content);
+	Request->ProcessRequest();
 
-		newData.ssml = ssml;
-		
-		TTSResultAvailable.Broadcast(newData, id);
-		//Shutdown();
-	}
-	else if (result->Reason == ResultReason::Canceled)
+}
+
+void AzureTTSThread::OnHttpResponseReceived(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
+{
+	if (bWasSuccessful && Response.IsValid())
 	{
-		auto cancellation = SpeechSynthesisCancellationDetails::FromResult(result);
-
-		if (cancellation->Reason == CancellationReason::Error)
-			FString  error= UTF8_TO_TCHAR(cancellation->ErrorDetails.c_str());
+		FString ResponseContent = Response->GetContentAsString();
+	}
+	else
+	{
 	}
 }
 
@@ -104,4 +113,27 @@ FDelegateHandle AzureTTSThread::TTSResultAvailableSubscribeUser(FTTSResultAvaila
 void AzureTTSThread::TTSResultAvailableUnsubscribeUser(FDelegateHandle DelegateHandle)
 {
 	TTSResultAvailable.Remove(DelegateHandle);
+}
+
+TSharedPtr<IHttpResponse, ESPMode::ThreadSafe> AzureTTSThread::ExecuteRequest(TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest, float LoopDelay)
+{
+	bool bStartedRequest = HttpRequest->ProcessRequest();
+	if (!bStartedRequest)
+	{
+		//UE_LOG(LogMyGame, Error, TEXT("Failed to start HTTP Request."));
+		return nullptr;
+	}
+
+	TSharedPtr<IHttpResponse, ESPMode::ThreadSafe> Response = HttpRequest->GetResponse();
+	while (true)
+	{
+		int32 Code = Response->GetResponseCode();
+
+		if (Code != 0)
+			break;
+
+		FPlatformProcess::Sleep(LoopDelay);
+	}
+
+	return Response;
 }

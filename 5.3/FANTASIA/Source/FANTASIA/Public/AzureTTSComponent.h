@@ -18,7 +18,6 @@
 #include "AzureTTSComponent.generated.h"
 
 using namespace std;
-using namespace Microsoft::CognitiveServices::Speech;
 
 UCLASS(ClassGroup = (Azure), meta = (BlueprintSpawnableComponent))
 class UAzureTTSComponent : public UActorComponent
@@ -55,18 +54,6 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category = "Speech to Text")
 		FSynthesizedEvent SynthesisReady;
-
-	UPROPERTY(EditAnywhere, Category = "Configuration")
-		FString Language;
-
-	UPROPERTY(EditAnywhere, Category = "Configuration")
-		FString Voice;
-
-	UPROPERTY(EditAnywhere, Category = "Configuration")
-		FString Key;
-
-	UPROPERTY(EditAnywhere, Category = "Configuration")
-		FString Region;
 
 	UPROPERTY(EditAnywhere, Category = "Configuration")
 		FString Endpoint;

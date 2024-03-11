@@ -3,7 +3,7 @@
 #include "AzureTTSComponent.h"
 
 using namespace std;
-using namespace Microsoft::CognitiveServices::Speech;
+//using namespace Microsoft::CognitiveServices::Speech;
 
 // Sets default values for this component's properties
 UAzureTTSComponent::UAzureTTSComponent()
@@ -19,9 +19,13 @@ void UAzureTTSComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	config = SpeechConfig::FromSubscription(std::string(TCHAR_TO_UTF8(*Key)), std::string(TCHAR_TO_UTF8(*Region)));
-	config->SetEndpointId(std::string(TCHAR_TO_UTF8(*Endpoint)));
+	//config = SpeechConfig::FromSubscription(std::string(TCHAR_TO_UTF8(*Key)), std::string(TCHAR_TO_UTF8(*Region)));
+	//config->SetEndpointId(std::string(TCHAR_TO_UTF8(*Endpoint)));
 	//config-> SpeechSynthesisLanguage = std::string(TCHAR_TO_UTF8(*Language));
+	if (!Speaker) {
+		Speaker = NewObject<UAudioComponent>(this);
+		Speaker->RegisterComponent();
+	}
 }
 
 // Called every frame
@@ -30,7 +34,13 @@ void UAzureTTSComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	if (idSynthesisReady != "") {
-		SynthesisReady.Broadcast(idSynthesisReady);
+		//SynthesisReady.Broadcast(idSynthesisReady);
+		//idSynthesisReady = "";
+		USoundBase* SoundToPlay = AzureTTSGetSound(idSynthesisReady);
+		if (SoundToPlay && Speaker) {
+			Speaker->SetSound(SoundToPlay);
+			Speaker->Play();
+		}
 		idSynthesisReady = "";
 	}
 }
@@ -49,12 +59,13 @@ void UAzureTTSComponent::AzureTTSSynthesize(FString ssml, FString id)
 {
 	FTTSResultAvailableDelegate TTSResultSubscriber;
 	TTSResultSubscriber.BindUObject(this, &UAzureTTSComponent::getResult);
-	handle = AzureTTSThread::setup(config, Language, Voice, Key, Region, ssml, id);
+	handle = AzureTTSThread::setup(ssml, id, Endpoint);
 	TTSResultAvailableHandle = handle->TTSResultAvailableSubscribeUser(TTSResultSubscriber);
 }
 
 USoundBase* UAzureTTSComponent::AzureTTSGetSound(FString id) {
-	uint32 SAMPLING_RATE = 16000;
+	//uint32 SAMPLING_RATE = 16000
+	uint32 SAMPLING_RATE = 32000;
 
 	USoundWave* SyntheticVoice = NewObject<USoundWave>();
 	SyntheticVoice->SetSampleRate(SAMPLING_RATE);
