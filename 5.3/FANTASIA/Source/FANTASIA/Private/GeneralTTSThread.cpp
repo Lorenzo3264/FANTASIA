@@ -1,55 +1,55 @@
-#include "AzureTTSThread.h"
+#include "GeneralTTSThread.h"
 
 using namespace std;
 
-AzureTTSThread* AzureTTSThread::Runnable = NULL;
+GeneralTTSThread* GeneralTTSThread::Runnable = NULL;
 
-AzureTTSThread::AzureTTSThread(FString inSsml, FString inID, FString url) : StopTaskCounter(0)
+GeneralTTSThread::GeneralTTSThread(FString inSsml, FString inID, FString url) : StopTaskCounter(0)
 {
 	ssml = inSsml;
 	id = inID;
-	Thread = FRunnableThread::Create(this, TEXT("AzureTTSThread"), 0, TPri_Normal);
+	Thread = FRunnableThread::Create(this, TEXT("GeneralTTSThread"), 0, TPri_Normal);
 	Endpoint = url;
 }
 
-AzureTTSThread::~AzureTTSThread() {
+GeneralTTSThread::~GeneralTTSThread() {
 	delete Thread;
 	Thread = NULL;
 }
 
 
-AzureTTSThread* AzureTTSThread::setup(FString ssml, FString id, FString Endpoint)
+GeneralTTSThread* GeneralTTSThread::setup(FString ssml, FString id, FString Endpoint)
 {
 	if (!Runnable && FPlatformProcess::SupportsMultithreading())
 	{
-		Runnable = new AzureTTSThread(ssml, id, Endpoint);
+		Runnable = new GeneralTTSThread(ssml, id, Endpoint);
 	}
 	return Runnable;
 }
 
-bool AzureTTSThread::Init()
+bool GeneralTTSThread::Init()
 {
 	return true;
 }
 
-uint32 AzureTTSThread::Run()
+uint32 GeneralTTSThread::Run()
 {
 	Synthesize();
 	return 0;
 }
 
-void AzureTTSThread::Stop()
+void GeneralTTSThread::Stop()
 {
 	StopTaskCounter.Increment();
 }
 
-void AzureTTSThread::EnsureCompletion()
+void GeneralTTSThread::EnsureCompletion()
 {
 	Stop();
 	Thread->WaitForCompletion();
 }
 
-void AzureTTSThread::Shutdown()
+void GeneralTTSThread::Shutdown()
 {
 	if (Runnable)
 	{
@@ -59,7 +59,7 @@ void AzureTTSThread::Shutdown()
 	}
 }
 
-void AzureTTSThread::Synthesize()
+void GeneralTTSThread::Synthesize()
 {
 
 	//Http request to CherryPy API
@@ -94,7 +94,7 @@ void AzureTTSThread::Synthesize()
 
 }
 
-void AzureTTSThread::OnHttpResponseReceived(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
+void GeneralTTSThread::OnHttpResponseReceived(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
 {
 	if (bWasSuccessful && Response.IsValid())
 	{
@@ -105,17 +105,17 @@ void AzureTTSThread::OnHttpResponseReceived(FHttpRequestPtr Request, FHttpRespon
 	}
 }
 
-FDelegateHandle AzureTTSThread::TTSResultAvailableSubscribeUser(FTTSResultAvailableDelegate& UseDelegate)
+FDelegateHandle GeneralTTSThread::TTSResultAvailableSubscribeUser(FTTSResultAvailableDelegate& UseDelegate)
 {
 	return TTSResultAvailable.Add(UseDelegate);
 }
 
-void AzureTTSThread::TTSResultAvailableUnsubscribeUser(FDelegateHandle DelegateHandle)
+void GeneralTTSThread::TTSResultAvailableUnsubscribeUser(FDelegateHandle DelegateHandle)
 {
 	TTSResultAvailable.Remove(DelegateHandle);
 }
 
-TSharedPtr<IHttpResponse, ESPMode::ThreadSafe> AzureTTSThread::ExecuteRequest(TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest, float LoopDelay)
+TSharedPtr<IHttpResponse, ESPMode::ThreadSafe> GeneralTTSThread::ExecuteRequest(TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest, float LoopDelay)
 {
 	bool bStartedRequest = HttpRequest->ProcessRequest();
 	if (!bStartedRequest)

@@ -7,7 +7,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "FANTASIATypes.h"
-#include "AzureTTSThread.h"
+#include "GeneralTTSThread.h"
 #include <speechapi_cxx.h>
 #include <iostream>
 #include <string>
@@ -15,18 +15,18 @@
 #include "Runtime/Online/HTTP/Public/Http.h"
 #include "Runtime/Json/Public/Json.h"
 #include "Runtime/JsonUtilities/Public/JsonUtilities.h"
-#include "AzureTTSComponent.generated.h"
+#include "GeneralTTSComponent.generated.h"
 
 using namespace std;
 
 UCLASS(ClassGroup = (Azure), meta = (BlueprintSpawnableComponent))
-class UAzureTTSComponent : public UActorComponent
+class UGeneralTTSComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this component's properties
-	UAzureTTSComponent();
+	UGeneralTTSComponent();
 
 protected:
 	// Called when the game starts
@@ -37,7 +37,7 @@ private:
 	TMap<FString, FTTSData> Buffer;
 	TMap<FString, FString> PendingSSML;
 	shared_ptr<SpeechConfig> config;
-	AzureTTSThread* handle;
+	GeneralTTSThread* handle;
 	
 	FDelegateHandle TTSResultAvailableHandle;
 

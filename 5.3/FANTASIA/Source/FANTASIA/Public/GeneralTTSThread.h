@@ -9,14 +9,14 @@
 using namespace std;
 using namespace Microsoft::CognitiveServices::Speech;
 
-DECLARE_EVENT_TwoParams(AzureTTSThread, FAzureResultAvailableEvent, FTTSData, FString);
+DECLARE_EVENT_TwoParams(GeneralTTSThread, FAzureResultAvailableEvent, FTTSData, FString);
 
 //~~~~~ Multi Threading ~~~
-class AzureTTSThread : public FRunnable
+class GeneralTTSThread : public FRunnable
 {
 private:
 	/** Singleton instance, can access the thread any time via static accessor, if it is active! */
-	static AzureTTSThread* Runnable;
+	static GeneralTTSThread* Runnable;
 
 	/** Stop this thread? Uses Thread Safe Counter */
 	FThreadSafeCounter StopTaskCounter;
@@ -40,11 +40,11 @@ public:
 	//~~~ Thread Core Functions ~~~
 
 	//Constructor
-	AzureTTSThread(FString inSsml, FString inID, FString Endpoint);
+	GeneralTTSThread(FString inSsml, FString inID, FString Endpoint);
 
-	virtual ~AzureTTSThread();
+	virtual ~GeneralTTSThread();
 
-	static AzureTTSThread* setup(FString ssml, FString id, FString Endpoint);
+	static GeneralTTSThread* setup(FString ssml, FString id, FString Endpoint);
 
 	// Begin FRunnable interface.
 	virtual bool Init();

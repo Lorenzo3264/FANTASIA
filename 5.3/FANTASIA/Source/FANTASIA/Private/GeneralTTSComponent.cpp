@@ -1,12 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "AzureTTSComponent.h"
+#include "GeneralTTSComponent.h"
 
 using namespace std;
 //using namespace Microsoft::CognitiveServices::Speech;
 
 // Sets default values for this component's properties
-UAzureTTSComponent::UAzureTTSComponent()
+UGeneralTTSComponent::UGeneralTTSComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
@@ -15,7 +15,7 @@ UAzureTTSComponent::UAzureTTSComponent()
 
 
 // Called when the game starts
-void UAzureTTSComponent::BeginPlay()
+void UGeneralTTSComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -29,7 +29,7 @@ void UAzureTTSComponent::BeginPlay()
 }
 
 // Called every frame
-void UAzureTTSComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+void UGeneralTTSComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
@@ -45,7 +45,7 @@ void UAzureTTSComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 	}
 }
 
-void UAzureTTSComponent::getResult(FTTSData response, FString id)
+void UGeneralTTSComponent::getResult(FTTSData response, FString id)
 {
 	handle->TTSResultAvailableUnsubscribeUser(TTSResultAvailableHandle);
 	handle->Shutdown();
@@ -55,15 +55,15 @@ void UAzureTTSComponent::getResult(FTTSData response, FString id)
 	idSynthesisReady = id;
 }
 
-void UAzureTTSComponent::AzureTTSSynthesize(FString ssml, FString id)
+void UGeneralTTSComponent::AzureTTSSynthesize(FString ssml, FString id)
 {
 	FTTSResultAvailableDelegate TTSResultSubscriber;
-	TTSResultSubscriber.BindUObject(this, &UAzureTTSComponent::getResult);
-	handle = AzureTTSThread::setup(ssml, id, Endpoint);
+	TTSResultSubscriber.BindUObject(this, &UGeneralTTSComponent::getResult);
+	handle = GeneralTTSThread::setup(ssml, id, Endpoint);
 	TTSResultAvailableHandle = handle->TTSResultAvailableSubscribeUser(TTSResultSubscriber);
 }
 
-USoundBase* UAzureTTSComponent::AzureTTSGetSound(FString id) {
+USoundBase* UGeneralTTSComponent::AzureTTSGetSound(FString id) {
 	//uint32 SAMPLING_RATE = 16000
 	uint32 SAMPLING_RATE = 32000;
 
