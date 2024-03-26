@@ -9,7 +9,7 @@
 using namespace std;
 using namespace Microsoft::CognitiveServices::Speech;
 
-DECLARE_EVENT_TwoParams(GeneralTTSThread, FAzureResultAvailableEvent, FTTSData, FString);
+DECLARE_EVENT_TwoParams(GeneralTTSThread, ResultAvailableEvent, FTTSData, FString);
 
 //~~~~~ Multi Threading ~~~
 class GeneralTTSThread : public FRunnable
@@ -24,7 +24,7 @@ private:
 	/** Thread to run the worker FRunnable on */
 	FRunnableThread* Thread;
 
-	FAzureResultAvailableEvent TTSResultAvailable;
+	ResultAvailableEvent TTSResultAvailable;
 
 	shared_ptr<SpeechConfig> TTSConfig;
 	shared_ptr<SpeechSynthesizer> synthesizer;

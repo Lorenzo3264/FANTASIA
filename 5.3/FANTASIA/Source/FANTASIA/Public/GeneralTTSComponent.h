@@ -19,7 +19,7 @@
 
 using namespace std;
 
-UCLASS(ClassGroup = (Azure), meta = (BlueprintSpawnableComponent))
+UCLASS(meta = (BlueprintSpawnableComponent))
 class UGeneralTTSComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -61,9 +61,9 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	UFUNCTION(BlueprintCallable, meta = (DisplayName = "TTS Start", Keywords = "Azure Plugin TTS"), Category = "TTS")
-		void AzureTTSSynthesize(FString ssml, FString id);
+	UFUNCTION(BlueprintCallable, meta = (DisplayName = "TTS Start", Keywords = "Plugin TTS"), Category = "TTS")
+		void TTSSynthesize(FString ssml, FString id);
 
-	UFUNCTION(BlueprintPure, meta = (DisplayName = "Get Sound", Keywords = "Azure Plugin TTS"), Category = "TTS")
-		USoundBase* AzureTTSGetSound(FString id);
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Get Sound", Keywords = "Plugin TTS"), Category = "TTS")
+		USoundBase* TTSGetSound(FString id);
 };

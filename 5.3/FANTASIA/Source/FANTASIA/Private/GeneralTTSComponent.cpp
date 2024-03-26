@@ -36,7 +36,7 @@ void UGeneralTTSComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	if (idSynthesisReady != "") {
 		//SynthesisReady.Broadcast(idSynthesisReady);
 		//idSynthesisReady = "";
-		USoundBase* SoundToPlay = AzureTTSGetSound(idSynthesisReady);
+		USoundBase* SoundToPlay = TTSGetSound(idSynthesisReady);
 		if (SoundToPlay && Speaker) {
 			Speaker->SetSound(SoundToPlay);
 			Speaker->Play();
@@ -55,7 +55,7 @@ void UGeneralTTSComponent::getResult(FTTSData response, FString id)
 	idSynthesisReady = id;
 }
 
-void UGeneralTTSComponent::AzureTTSSynthesize(FString ssml, FString id)
+void UGeneralTTSComponent::TTSSynthesize(FString ssml, FString id)
 {
 	FTTSResultAvailableDelegate TTSResultSubscriber;
 	TTSResultSubscriber.BindUObject(this, &UGeneralTTSComponent::getResult);
@@ -63,9 +63,9 @@ void UGeneralTTSComponent::AzureTTSSynthesize(FString ssml, FString id)
 	TTSResultAvailableHandle = handle->TTSResultAvailableSubscribeUser(TTSResultSubscriber);
 }
 
-USoundBase* UGeneralTTSComponent::AzureTTSGetSound(FString id) {
+USoundBase* UGeneralTTSComponent::TTSGetSound(FString id) {
 	//uint32 SAMPLING_RATE = 16000
-	uint32 SAMPLING_RATE = 32000;
+	uint32 SAMPLING_RATE = 44100;
 
 	USoundWave* SyntheticVoice = NewObject<USoundWave>();
 	SyntheticVoice->SetSampleRate(SAMPLING_RATE);
