@@ -54,8 +54,6 @@ public:
 
 	void Synthesize();
 
-	void OnHttpResponseReceived(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
-
 	/** Makes sure this thread has stopped properly */
 	void EnsureCompletion();
 
@@ -64,6 +62,4 @@ public:
 
 	FDelegateHandle TTSResultAvailableSubscribeUser(FTTSResultAvailableDelegate& UseDelegate);
 	void TTSResultAvailableUnsubscribeUser(FDelegateHandle DelegateHandle);
-
-	static TSharedPtr<IHttpResponse, ESPMode::ThreadSafe> ExecuteRequest(TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest, float LoopDelay);
 };

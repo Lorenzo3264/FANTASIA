@@ -94,17 +94,6 @@ void GeneralTTSThread::Synthesize()
 
 }
 
-void GeneralTTSThread::OnHttpResponseReceived(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
-{
-	if (bWasSuccessful && Response.IsValid())
-	{
-		FString ResponseContent = Response->GetContentAsString();
-	}
-	else
-	{
-	}
-}
-
 FDelegateHandle GeneralTTSThread::TTSResultAvailableSubscribeUser(FTTSResultAvailableDelegate& UseDelegate)
 {
 	return TTSResultAvailable.Add(UseDelegate);
@@ -113,27 +102,4 @@ FDelegateHandle GeneralTTSThread::TTSResultAvailableSubscribeUser(FTTSResultAvai
 void GeneralTTSThread::TTSResultAvailableUnsubscribeUser(FDelegateHandle DelegateHandle)
 {
 	TTSResultAvailable.Remove(DelegateHandle);
-}
-
-TSharedPtr<IHttpResponse, ESPMode::ThreadSafe> GeneralTTSThread::ExecuteRequest(TSharedRef<IHttpRequest, ESPMode::ThreadSafe> HttpRequest, float LoopDelay)
-{
-	bool bStartedRequest = HttpRequest->ProcessRequest();
-	if (!bStartedRequest)
-	{
-		//UE_LOG(LogMyGame, Error, TEXT("Failed to start HTTP Request."));
-		return nullptr;
-	}
-
-	TSharedPtr<IHttpResponse, ESPMode::ThreadSafe> Response = HttpRequest->GetResponse();
-	while (true)
-	{
-		int32 Code = Response->GetResponseCode();
-
-		if (Code != 0)
-			break;
-
-		FPlatformProcess::Sleep(LoopDelay);
-	}
-
-	return Response;
 }

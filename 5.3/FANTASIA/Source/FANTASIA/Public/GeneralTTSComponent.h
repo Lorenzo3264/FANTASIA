@@ -15,12 +15,13 @@
 #include "Runtime/Online/HTTP/Public/Http.h"
 #include "Runtime/Json/Public/Json.h"
 #include "Runtime/JsonUtilities/Public/JsonUtilities.h"
+#include "TTSInterface.h"
 #include "GeneralTTSComponent.generated.h"
 
 using namespace std;
 
 UCLASS(meta = (BlueprintSpawnableComponent))
-class UGeneralTTSComponent : public UActorComponent
+class UGeneralTTSComponent : public UActorComponent, public ITTSInterface
 {
 	GENERATED_BODY()
 
@@ -41,7 +42,7 @@ private:
 	
 	FDelegateHandle TTSResultAvailableHandle;
 
-	void getResult(FTTSData response, FString id);
+	void getResult(FTTSData response, FString id) override;
 
 	FSynthesizedInternalEvent synthesisReadyInternal;
 
@@ -62,8 +63,8 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "TTS Start", Keywords = "Plugin TTS"), Category = "TTS")
-		void TTSSynthesize(FString ssml, FString id);
+		void TTSSynthesize(FString ssml, FString id) override;
 
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Get Sound", Keywords = "Plugin TTS"), Category = "TTS")
-		USoundBase* TTSGetSound(FString id);
+		USoundBase* TTSGetSound(FString id) override;
 };
