@@ -45,7 +45,7 @@ public:
 	/**
 	* To format the synthesis result into audio playable by Unreal
 	*
-	*	buffer synthesis id
+	*	@parm id - buffer synthesis id
 	*
 	**/
 	UFUNCTION(Category = "TTS")
