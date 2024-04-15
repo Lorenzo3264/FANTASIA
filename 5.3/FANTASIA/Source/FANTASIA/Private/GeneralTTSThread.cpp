@@ -62,7 +62,7 @@ void GeneralTTSThread::Shutdown()
 void GeneralTTSThread::Synthesize()
 {
 
-	//Http request to CherryPy API
+	//Http request to API
 
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
 	Request->OnProcessRequestComplete().BindLambda([this](FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
@@ -80,16 +80,14 @@ void GeneralTTSThread::Synthesize()
 			}
 			else
 			{
-				// Gestione errori
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, "Richiesta non riuscita o risposta non valida");
+				//Error Handling
+				UE_LOG(LogTemp, Error, TEXT("Connection to the TTS endpoint failed."));
 			}
 		});
 	Request->SetURL(Endpoint);
 	Request->SetVerb("POST");
 	Request->SetHeader("Content-Type", "application/x-www-form-urlencoded");
-	FString Content = "line=";
-	Content = Content + ssml;
-	Request->SetContentAsString(Content);
+	Request->SetContentAsString(ssml);
 	Request->ProcessRequest();
 
 }
