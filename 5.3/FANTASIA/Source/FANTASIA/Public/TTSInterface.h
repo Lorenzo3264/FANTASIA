@@ -22,7 +22,7 @@ class FANTASIA_API ITTSInterface
 
 public:
 	/**
-	* To obtain the synthesis results
+	* To obtain the synthesis sound wave
 	*
 	*	@param response - synthesis results
 	*	@param id - buffer synthesis id
