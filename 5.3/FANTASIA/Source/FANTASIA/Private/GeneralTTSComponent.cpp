@@ -33,14 +33,18 @@ void UGeneralTTSComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	//if (idSynthesisReady != "") {
+	//	//SynthesisReady.Broadcast(idSynthesisReady);
+	//	//idSynthesisReady = "";
+	//	USoundBase* SoundToPlay = TTSGetSound(idSynthesisReady);
+	//	if (SoundToPlay && Speaker) {
+	//		Speaker->SetSound(SoundToPlay);
+	//		Speaker->Play();
+	//	}
+	//	idSynthesisReady = "";
+	//}
 	if (idSynthesisReady != "") {
-		//SynthesisReady.Broadcast(idSynthesisReady);
-		//idSynthesisReady = "";
-		USoundBase* SoundToPlay = TTSGetSound(idSynthesisReady);
-		if (SoundToPlay && Speaker) {
-			Speaker->SetSound(SoundToPlay);
-			Speaker->Play();
-		}
+		SynthesisReady.Broadcast(idSynthesisReady);  // Usando l'evento di broadcast come nella classe AzureTTSComponent
 		idSynthesisReady = "";
 	}
 }
