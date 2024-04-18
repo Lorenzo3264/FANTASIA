@@ -19,9 +19,6 @@ void UGeneralTTSComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//config = SpeechConfig::FromSubscription(std::string(TCHAR_TO_UTF8(*Key)), std::string(TCHAR_TO_UTF8(*Region)));
-	//config->SetEndpointId(std::string(TCHAR_TO_UTF8(*Endpoint)));
-	//config-> SpeechSynthesisLanguage = std::string(TCHAR_TO_UTF8(*Language));
 	if (!Speaker) {
 		Speaker = NewObject<UAudioComponent>(this);
 		Speaker->RegisterComponent();
@@ -32,17 +29,6 @@ void UGeneralTTSComponent::BeginPlay()
 void UGeneralTTSComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	//if (idSynthesisReady != "") {
-	//	//SynthesisReady.Broadcast(idSynthesisReady);
-	//	//idSynthesisReady = "";
-	//	USoundBase* SoundToPlay = TTSGetSound(idSynthesisReady);
-	//	if (SoundToPlay && Speaker) {
-	//		Speaker->SetSound(SoundToPlay);
-	//		Speaker->Play();
-	//	}
-	//	idSynthesisReady = "";
-	//}
 	if (idSynthesisReady != "") {
 		SynthesisReady.Broadcast(idSynthesisReady);  // Usando l'evento di broadcast come nella classe AzureTTSComponent
 		idSynthesisReady = "";
