@@ -59,12 +59,15 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Configuration")
 		FString Endpoint;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Configuration", meta = (DisplayName = "Sampling Rate", ClampMin = "8000", ClampMax = "96000", Default = "44100"))
+		int32 SamplingRate = 44100;
+
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "TTS Start", Keywords = "Plugin TTS"), Category = "TTS")
 		void TTSSynthesize(FString ssml, FString id) override;
 
-	UFUNCTION(BlueprintPure, meta = (DisplayName = "Get Sound", Keywords = "Plugin TTS"), Category = "TTS")
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Get Sound General", Keywords = "Plugin TTS"), Category = "TTS")
 		USoundBase* TTSGetSound(FString id) override;
 };
