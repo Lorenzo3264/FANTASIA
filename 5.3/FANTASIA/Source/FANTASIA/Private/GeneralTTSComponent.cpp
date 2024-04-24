@@ -53,7 +53,7 @@ void UGeneralTTSComponent::TTSSynthesize(FString ssml, FString id)
 	TTSResultAvailableHandle = handle->TTSResultAvailableSubscribeUser(TTSResultSubscriber);
 }
 
-USoundBase* UGeneralTTSComponent::TTSGetSound(FString id) {
+USoundWave* UGeneralTTSComponent::TTSGetSound(FString id) {
 	//uint32 SAMPLING_RATE = 16000
 	//uint32 SAMPLING_RATE = 44100;
 

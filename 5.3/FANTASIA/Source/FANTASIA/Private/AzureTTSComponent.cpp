@@ -53,7 +53,7 @@ void UAzureTTSComponent::TTSSynthesize(FString ssml, FString id)
 	TTSResultAvailableHandle = handle->TTSResultAvailableSubscribeUser(TTSResultSubscriber);
 }
 
-USoundBase* UAzureTTSComponent::TTSGetSound(FString id) {
+USoundWave* UAzureTTSComponent::TTSGetSound(FString id) {
 	uint32 SAMPLING_RATE = 16000;
 
 	USoundWave* SyntheticVoice = NewObject<USoundWave>();

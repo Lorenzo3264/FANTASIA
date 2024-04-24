@@ -69,5 +69,5 @@ public:
 		void TTSSynthesize(FString ssml, FString id) override;
 
 	UFUNCTION(BlueprintPure, meta = (DisplayName = "Get Sound General", Keywords = "Plugin TTS"), Category = "TTS")
-		USoundBase* TTSGetSound(FString id) override;
+		USoundWave* TTSGetSound(FString id) override;
 };
