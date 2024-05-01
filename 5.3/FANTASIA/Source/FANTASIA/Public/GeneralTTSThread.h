@@ -8,7 +8,6 @@
 
 
 using namespace std;
-using namespace Microsoft::CognitiveServices::Speech;
 
 DECLARE_EVENT_TwoParams(GeneralTTSThread, ResultAvailableEvent, FTTSData, FString);
 

@@ -3,7 +3,6 @@
 #include "GeneralTTSComponent.h"
 
 using namespace std;
-//using namespace Microsoft::CognitiveServices::Speech;
 
 // Sets default values for this component's properties
 UGeneralTTSComponent::UGeneralTTSComponent()
@@ -30,7 +29,7 @@ void UGeneralTTSComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	if (idSynthesisReady != "") {
-		SynthesisReady.Broadcast(idSynthesisReady);  // Usando l'evento di broadcast come nella classe AzureTTSComponent
+		SynthesisReady.Broadcast(idSynthesisReady);
 		idSynthesisReady = "";
 	}
 }
@@ -54,9 +53,6 @@ void UGeneralTTSComponent::TTSSynthesize(FString ssml, FString id)
 }
 
 USoundWave* UGeneralTTSComponent::TTSGetSound(FString id) {
-	//uint32 SAMPLING_RATE = 16000
-	//uint32 SAMPLING_RATE = 44100;
-
 	USoundWave* SyntheticVoice = NewObject<USoundWave>();
 	SyntheticVoice->SetSampleRate(SamplingRate);
 	SyntheticVoice->NumChannels = 1;

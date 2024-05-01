@@ -53,8 +53,6 @@ void GeneralTTSThread::Shutdown()
 {
 	if (Runnable)
 	{
-		//Runnable->EnsureCompletion();
-		//delete Runnable;
 		Runnable = NULL;
 	}
 }
@@ -63,7 +61,6 @@ void GeneralTTSThread::Synthesize()
 {
 
 	//Http request to API
-
 	TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
 	Request->OnProcessRequestComplete().BindLambda([this](FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful)
 		{
