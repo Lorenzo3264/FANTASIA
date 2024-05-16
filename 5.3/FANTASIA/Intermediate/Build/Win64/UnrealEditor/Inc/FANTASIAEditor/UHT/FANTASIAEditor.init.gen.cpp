@@ -17,7 +17,7 @@ void EmptyLinkFunctionForGeneratedCodeFANTASIAEditor_init() {}
 				nullptr,
 				0,
 				PKG_CompiledIn | 0x00000040,
-				0x9ECA8FF8,
+				0x6E03D539,
 				0x9281B0F7,
 				METADATA_PARAMS(0, nullptr)
 			};
@@ -25,5 +25,5 @@ void EmptyLinkFunctionForGeneratedCodeFANTASIAEditor_init() {}
 		}
 		return Z_Registration_Info_UPackage__Script_FANTASIAEditor.OuterSingleton;
 	}
-	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_FANTASIAEditor(Z_Construct_UPackage__Script_FANTASIAEditor, TEXT("/Script/FANTASIAEditor"), Z_Registration_Info_UPackage__Script_FANTASIAEditor, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x9ECA8FF8, 0x9281B0F7));
+	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_FANTASIAEditor(Z_Construct_UPackage__Script_FANTASIAEditor, TEXT("/Script/FANTASIAEditor"), Z_Registration_Info_UPackage__Script_FANTASIAEditor, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x6E03D539, 0x9281B0F7));
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

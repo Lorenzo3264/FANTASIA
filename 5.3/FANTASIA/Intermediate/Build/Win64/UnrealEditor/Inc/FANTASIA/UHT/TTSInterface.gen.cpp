@@ -195,15 +195,15 @@ void EmptyLinkFunctionForGeneratedCodeTTSInterface() {}
 	UTTSInterface::UTTSInterface(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {}
 	DEFINE_VTABLE_PTR_HELPER_CTOR(UTTSInterface);
 	UTTSInterface::~UTTSInterface() {}
-	struct Z_CompiledInDeferFile_FID_Perforce_FANTASIADevelopment_Plugins_FANTASIA_Source_FANTASIA_Public_TTSInterface_h_Statics
+	struct Z_CompiledInDeferFile_FID_MyProj_Plugins_FANTASIA_Source_FANTASIA_Public_TTSInterface_h_Statics
 	{
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
-	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Perforce_FANTASIADevelopment_Plugins_FANTASIA_Source_FANTASIA_Public_TTSInterface_h_Statics::ClassInfo[] = {
+	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_MyProj_Plugins_FANTASIA_Source_FANTASIA_Public_TTSInterface_h_Statics::ClassInfo[] = {
 		{ Z_Construct_UClass_UTTSInterface, UTTSInterface::StaticClass, TEXT("UTTSInterface"), &Z_Registration_Info_UClass_UTTSInterface, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UTTSInterface), 3444065753U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Perforce_FANTASIADevelopment_Plugins_FANTASIA_Source_FANTASIA_Public_TTSInterface_h_434742790(TEXT("/Script/FANTASIA"),
-		Z_CompiledInDeferFile_FID_Perforce_FANTASIADevelopment_Plugins_FANTASIA_Source_FANTASIA_Public_TTSInterface_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Perforce_FANTASIADevelopment_Plugins_FANTASIA_Source_FANTASIA_Public_TTSInterface_h_Statics::ClassInfo),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_MyProj_Plugins_FANTASIA_Source_FANTASIA_Public_TTSInterface_h_434742790(TEXT("/Script/FANTASIA"),
+		Z_CompiledInDeferFile_FID_MyProj_Plugins_FANTASIA_Source_FANTASIA_Public_TTSInterface_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_MyProj_Plugins_FANTASIA_Source_FANTASIA_Public_TTSInterface_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
