@@ -39,7 +39,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Audio2Face")
 	FString server_url;
-	
+	FMyThread* MyThread;
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "NvidiaReadAudioFile", Keywords = "Nvidia Plugin"), Category = "Audio2Face")
 	void ReadAudioFile(USoundWave* SoundWave);
 	void A2FaceFMyThread(TArray<float> AudioData, int32 sampleRate);

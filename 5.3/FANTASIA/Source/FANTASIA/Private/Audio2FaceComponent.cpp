@@ -23,13 +23,21 @@ void UAudio2FaceComponent::ReadAudioFile(USoundWave* SoundWave)
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("sending audio.."));
 	//////////////////////PARTE THREADS GRPC////////////////////////    
 	A2FaceFMyThread(AudioData, sampleRate);
-	UE_LOG(LogTemp, Log, TEXT("FineReadAudioFile"));
 }
 
 void UAudio2FaceComponent::A2FaceFMyThread(TArray<float> AudioData, int32 sampleRate)
 {
-	FMyThread* MyThread = FMyThread::setup(PlayerA2F_name, server_url, AudioData, sampleRate);
-	FPlatformProcess::Sleep(0.01);
+    if (MyThread!=NULL &&  MyThread->IsThreadRunning()) {
+        UE_LOG(LogTemp, Log, TEXT("MyThread ancora in esecuzione"));
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("L'audio ancora in esecuzione,riprovare piu tardi"));
+
+    }
+    else {
+        MyThread = FMyThread::setup(PlayerA2F_name, server_url, AudioData, sampleRate);
+        FPlatformProcess::Sleep(0.01);
+    }
+	
+    
 }
 
 void UAudio2FaceComponent::LoadSoundWaveFromFile_Internal(TArray<float>& OutAudioData, int32& sampleRate, USoundWave* SoundWave)
@@ -37,7 +45,7 @@ void UAudio2FaceComponent::LoadSoundWaveFromFile_Internal(TArray<float>& OutAudi
     TArray<uint8> AudioBytes;
     uint32 SampleRate;
     uint16 NumChannels;
-    if (SoundWave->GetImportedSoundWaveData(AudioBytes, SampleRate, NumChannels))
+    if (SoundWave!=NULL && SoundWave->GetImportedSoundWaveData(AudioBytes, SampleRate, NumChannels))
     {
         TArray<float> AudioData;
         for (int32 i = 0; i < AudioBytes.Num(); i += 2 * NumChannels)
@@ -62,6 +70,10 @@ void UAudio2FaceComponent::LoadSoundWaveFromFile_Internal(TArray<float>& OutAudi
         }
         OutAudioData = AudioData;
         sampleRate = SampleRate;
+    }
+    else {
+        UE_LOG(LogTemp, Log, TEXT("SoundWave->GetImportedSoundWaveData è null"));
+        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Errore nella apertura del soundwave"));
     }
 }
 

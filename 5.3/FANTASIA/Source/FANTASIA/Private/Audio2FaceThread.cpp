@@ -1,5 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
+// Fill out your copyright notice in the Description page of Project Settings.
+
 #pragma once
 #include "Audio2FaceThread.h"
 
@@ -28,8 +30,10 @@ FMyThread::FMyThread(FString inPlayerA2F_name, FString inserver_url, TArray<floa
 }
 
 FMyThread::~FMyThread() {
-    delete Thread;
-    Thread = NULL;
+    if (Thread != NULL) {
+        delete Thread;
+        Thread = NULL;
+    }
 }
 
 FMyThread* FMyThread::setup(FString inPlayerA2F_name, FString inserver_url, TArray<float> inAudioData, int32 inSampleRate)
@@ -50,8 +54,9 @@ bool FMyThread::Init()
 
 uint32 FMyThread::Run()
 {
-
+    bIsRunning = true;
     SendToAudio2FaceGrpc();
+    bIsRunning = false;
     return 0;
 }
 
@@ -70,18 +75,24 @@ void FMyThread::Shutdown()
 {
     if (Runnable)
     {
-
+        //Runnable->bIsFinished = false;
         //Runnable->EnsureCompletion();
         //delete Runnable;
         grpc_shutdown();
         Runnable = NULL;
-
     }
+}
+
+bool FMyThread::IsThreadRunning() const
+{
+    
+        return bIsRunning;
+    
+   
 }
 
 void FMyThread::SendToAudio2FaceGrpc()
 {
-
     string url = TCHAR_TO_UTF8(*server_url);
     std::shared_ptr<Channel> channel2 = grpc::CreateChannel(url, grpc::InsecureChannelCredentials());
     //controllo se channel e stub sono caricati correttamente
