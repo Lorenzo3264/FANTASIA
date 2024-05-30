@@ -56,10 +56,19 @@ USoundWave* UGeneralTTSComponent::TTSGetSound(FString id) {
 	USoundWave* SyntheticVoice = NewObject<USoundWave>();
 	SyntheticVoice->SetSampleRate(SamplingRate);
 	SyntheticVoice->NumChannels = 1;
-	const int32 BytesDataPerSecond = SamplingRate;
-	SyntheticVoice->RawPCMDataSize = Buffer[id].AudioData.Num() * sizeof(uint8);
-	SyntheticVoice->Duration = (float)Buffer[id].AudioData.Num() / (2 * (float)SamplingRate);
-	SyntheticVoice->RawPCMData = static_cast<uint8*>(FMemory::Malloc(SyntheticVoice->RawPCMDataSize));
-	FMemory::Memcpy(SyntheticVoice->RawPCMData, Buffer[id].AudioData.GetData(), SyntheticVoice->RawPCMDataSize);
+
+	if (HeaderBitsToTrim > 0 && HeaderBitsToTrim <= Buffer[id].AudioData.Num() * sizeof(uint8)) {
+		int32 TrimmedDataSize = Buffer[id].AudioData.Num() - HeaderBitsToTrim;
+		SyntheticVoice->RawPCMDataSize = TrimmedDataSize * sizeof(uint8);
+		SyntheticVoice->Duration = (float)TrimmedDataSize / (2 * (float)SamplingRate);
+		SyntheticVoice->RawPCMData = static_cast<uint8*>(FMemory::Malloc(SyntheticVoice->RawPCMDataSize));
+		FMemory::Memcpy(SyntheticVoice->RawPCMData, Buffer[id].AudioData.GetData() + HeaderBitsToTrim, SyntheticVoice->RawPCMDataSize);
+	}
+	else {
+		SyntheticVoice->RawPCMDataSize = Buffer[id].AudioData.Num() * sizeof(uint8);
+		SyntheticVoice->Duration = (float)Buffer[id].AudioData.Num() / (2 * (float)SamplingRate);
+		SyntheticVoice->RawPCMData = static_cast<uint8*>(FMemory::Malloc(SyntheticVoice->RawPCMDataSize));
+		FMemory::Memcpy(SyntheticVoice->RawPCMData, Buffer[id].AudioData.GetData(), SyntheticVoice->RawPCMDataSize);
+	}
 	return SyntheticVoice;
 }

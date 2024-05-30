@@ -60,6 +60,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Configuration", meta = (DisplayName = "Sampling Rate", ClampMin = "8000", ClampMax = "96000", Default = "44100"))
 		int32 SamplingRate = 44100;
 
+	UPROPERTY(EditAnywhere, Category = "Configuration")
+		uint8 HeaderBitsToTrim = 0;
+
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
