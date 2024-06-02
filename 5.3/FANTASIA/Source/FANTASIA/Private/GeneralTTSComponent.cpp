@@ -53,9 +53,9 @@ void UGeneralTTSComponent::TTSSynthesize(FString ssml, FString id)
 }
 
 USoundWave* UGeneralTTSComponent::TTSGetSound(FString id) {
-	USoundWave* SyntheticVoice = NewObject<USoundWave>();
-	SyntheticVoice->SetSampleRate(SamplingRate);
-	SyntheticVoice->NumChannels = 1;
+    USoundWave* SyntheticVoice = NewObject<USoundWave>();
+    SyntheticVoice->SetSampleRate(SamplingRate);
+    SyntheticVoice->NumChannels = 1;
 
 	if (HeaderBitsToTrim > 0 && HeaderBitsToTrim <= Buffer[id].AudioData.Num() * sizeof(uint8)) {
 		int32 TrimmedDataSize = Buffer[id].AudioData.Num() - HeaderBitsToTrim;
@@ -70,5 +70,27 @@ USoundWave* UGeneralTTSComponent::TTSGetSound(FString id) {
 		SyntheticVoice->RawPCMData = static_cast<uint8*>(FMemory::Malloc(SyntheticVoice->RawPCMDataSize));
 		FMemory::Memcpy(SyntheticVoice->RawPCMData, Buffer[id].AudioData.GetData(), SyntheticVoice->RawPCMDataSize);
 	}
-	return SyntheticVoice;
+
+	if (SecondsOfSilenceAtEnd > 0) {
+		int32 SilenceSampleCount = FMath::RoundToInt(SecondsOfSilenceAtEnd * SamplingRate);	//Silence Sample to add
+		int32 SilenceDataSize = SilenceSampleCount * sizeof(int16);
+		int32 CombinedDataSize = SyntheticVoice->RawPCMDataSize + SilenceDataSize;
+		uint8* CombinedData = static_cast<uint8*>(FMemory::Realloc(SyntheticVoice->RawPCMData, CombinedDataSize));	//Memory realloc
+
+		if (CombinedData) {
+			FMemory::Memset(CombinedData + SyntheticVoice->RawPCMDataSize, 0, SilenceDataSize);	//Adding silence bits (0)
+			SyntheticVoice->RawPCMData = CombinedData;
+			SyntheticVoice->RawPCMDataSize = CombinedDataSize;
+			SyntheticVoice->Duration += SecondsOfSilenceAtEnd;
+		}
+		else {
+			FMemory::Free(SyntheticVoice->RawPCMData);	//Failed Realloc
+			SyntheticVoice->RawPCMData = nullptr;
+			SyntheticVoice->RawPCMDataSize = 0;
+			SyntheticVoice->Duration = 0;
+		}
+	}
+
+
+    return SyntheticVoice;
 }

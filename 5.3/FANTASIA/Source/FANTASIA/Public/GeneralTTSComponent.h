@@ -63,6 +63,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Configuration")
 		uint8 HeaderBitsToTrim = 0;
 
+	UPROPERTY(EditAnywhere, Category = "Configuration")
+		float SecondsOfSilenceAtEnd = 0;
+
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
