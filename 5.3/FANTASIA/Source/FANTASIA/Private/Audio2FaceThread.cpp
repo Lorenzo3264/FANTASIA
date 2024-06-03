@@ -26,6 +26,7 @@ FMyThread::FMyThread(FString inPlayerA2F_name, FString inserver_url, TArray<floa
     server_url = inserver_url;
     AudioData = inAudioData;
     SampleRate = inSampleRate;
+
     Thread = FRunnableThread::Create(this, TEXT("A2FaceThread"), 0, TPri_Normal);
 }
 
@@ -49,6 +50,7 @@ FMyThread* FMyThread::setup(FString inPlayerA2F_name, FString inserver_url, TArr
 
 bool FMyThread::Init()
 {
+    StartTime = FDateTime::UtcNow();
     return true;
 }
 
@@ -79,8 +81,21 @@ void FMyThread::Shutdown()
         //Runnable->EnsureCompletion();
         //delete Runnable;
         grpc_shutdown();
+        PrintTimeThread();
         Runnable = NULL;
     }
+}
+
+
+
+void FMyThread::PrintTimeThread()
+{
+    Runnable->EndTime = FDateTime::UtcNow();
+    FTimespan TempoTrascorso = Runnable->EndTime - Runnable->StartTime;
+    int32 MillisecondiTrascorsi = TempoTrascorso.GetTotalMilliseconds();
+
+    // Stampa o salva il tempo trascorso
+    UE_LOG(LogTemp, Log, TEXT("Tempo di esecuzione del thread: %d ms"), MillisecondiTrascorsi);
 }
 
 bool FMyThread::IsThreadRunning() const
@@ -90,6 +105,7 @@ bool FMyThread::IsThreadRunning() const
     
    
 }
+
 
 void FMyThread::SendToAudio2FaceGrpc()
 {
@@ -111,7 +127,10 @@ void FMyThread::SendToAudio2FaceGrpc()
         UE_LOG(LogTemp, Log, TEXT("stub_  vuoto-->Shutdown()"));
         Shutdown();
     }
-
+    //TimeLogging
+    int TimeLog = 0;
+    FDateTime TimeInvioPrimoCHunk;
+    //
     string PlayerA2FaceName = TCHAR_TO_UTF8(*PlayerA2F_name);
     int chunk_size = SampleRate / 10;
     double sleep_between_chunks = 0.04;
@@ -131,11 +150,15 @@ void FMyThread::SendToAudio2FaceGrpc()
 
     PushAudioStreamResponse response;
     std::unique_ptr<grpc::ClientWriter<PushAudioStreamRequest>> writer(stub2->PushAudioStream(&context, &response));
+    FDateTime TimeInvioStartMarker = FDateTime::UtcNow();
+    UE_LOG(LogTemp, Log, TEXT("Tempo invio del start marker: %s"), *TimeInvioStartMarker.ToString());
     writer->Write(*request);
     UE_LOG(LogTemp, Log, TEXT("step4"));
 
+  
     // Invia i messaggi con audio_data
     for (int32 i = 0; i < AudioData.Num(); i += chunk_size) {
+        TimeLog++;
         FPlatformProcess::Sleep(sleep_between_chunks);
         // Sleep(static_cast<DWORD>(round(sleep_between_chunks * 1000))); // Converti in millisecondi
         int32 chunk_end = FMath::Min(i + chunk_size, AudioData.Num());
@@ -148,11 +171,25 @@ void FMyThread::SendToAudio2FaceGrpc()
             UE_LOG(LogTemp, Log, TEXT("Error pushing audio chunk: %s"), context.debug_error_string().c_str());
             break;
         }
+        if (TimeLog == 1) {
+            TimeInvioPrimoCHunk = FDateTime::UtcNow();
+            UE_LOG(LogTemp, Log, TEXT("Tempo invio del primo chunk: %s e di conseguenza fine StartMarker"), *TimeInvioPrimoCHunk.ToString());
+            FTimespan TempoTrascorsoStarterMark = TimeInvioPrimoCHunk - TimeInvioStartMarker;
+            int32 MillisecondiTrascorsiStarterMark = TempoTrascorsoStarterMark.GetTotalMilliseconds();
+            UE_LOG(LogTemp, Log, TEXT("Tempo trascorso in totale per StartMarker: %d ms"), MillisecondiTrascorsiStarterMark);
+
+        }
     }
     UE_LOG(LogTemp, Log, TEXT("step5"));
     writer->WritesDone();
     Status status = writer->Finish();
 
+
+    FDateTime FineInvio = FDateTime::UtcNow();
+    FTimespan TempoTrascorsoChunks = FineInvio - TimeInvioPrimoCHunk;
+    int32 MillisecondiTrascorsiChunks = TempoTrascorsoChunks.GetTotalMilliseconds();
+    UE_LOG(LogTemp, Log, TEXT("Tempo ricezione del response: %s"), *FineInvio.ToString());
+    UE_LOG(LogTemp, Log, TEXT("Tempo trascorso in totale dal 1 chunk al response: %d ms"), MillisecondiTrascorsiChunks);
     if (status.ok()) {
         if (response.success()) {
             UE_LOG(LogTemp, Log, TEXT("Audio stream pushed successfully!"));

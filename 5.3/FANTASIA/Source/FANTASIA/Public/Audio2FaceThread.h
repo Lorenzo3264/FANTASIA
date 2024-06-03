@@ -13,7 +13,8 @@ class FMyThread : public FRunnable
 private:
 	/** Singleton instance, can access the thread any time via static accessor, if it is active! */
 	static FMyThread* Runnable;
-
+	FDateTime StartTime;
+	FDateTime EndTime;
 	/** Stop this thread? Uses Thread Safe Counter */
 	FThreadSafeCounter StopTaskCounter;
 
@@ -24,7 +25,6 @@ private:
 	FString server_url;
 	TArray<float> AudioData;
 	int32 SampleRate;
-
 
 public:
 	bool bIsRunning;
@@ -51,7 +51,7 @@ public:
 
 	/** Shuts down the thread. Static so it can easily be called from outside the thread context */
 	static void Shutdown();
-
+	static void PrintTimeThread();
 	/** Checks if the thread is running */
 	bool IsThreadRunning() const;
 };

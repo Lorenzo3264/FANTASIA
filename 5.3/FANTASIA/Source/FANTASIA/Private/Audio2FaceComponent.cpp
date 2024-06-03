@@ -17,12 +17,14 @@ UAudio2FaceComponent::UAudio2FaceComponent()
 
 void UAudio2FaceComponent::ReadAudioFile(USoundWave* SoundWave)
 {
+    Inizio = FDateTime::UtcNow();
 	TArray<float>  AudioData;
 	int32 sampleRate;
 	LoadSoundWaveFromFile_Internal(AudioData, sampleRate, SoundWave);
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("sending audio.."));
 	//////////////////////PARTE THREADS GRPC////////////////////////    
 	A2FaceFMyThread(AudioData, sampleRate);
+    PrintTimeReadAudiofile();
 }
 
 void UAudio2FaceComponent::A2FaceFMyThread(TArray<float> AudioData, int32 sampleRate)
@@ -37,7 +39,7 @@ void UAudio2FaceComponent::A2FaceFMyThread(TArray<float> AudioData, int32 sample
         FPlatformProcess::Sleep(0.01);
     }
 	
-    
+   
 }
 
 void UAudio2FaceComponent::LoadSoundWaveFromFile_Internal(TArray<float>& OutAudioData, int32& sampleRate, USoundWave* SoundWave)
@@ -77,6 +79,16 @@ void UAudio2FaceComponent::LoadSoundWaveFromFile_Internal(TArray<float>& OutAudi
     }
 }
 
+void UAudio2FaceComponent::PrintTimeReadAudiofile() 
+{
+    Fine = FDateTime::UtcNow();
+    FTimespan TempoTrascorso = Fine - Inizio;
+    int32 MillisecondiTrascorsi = TempoTrascorso.GetTotalMilliseconds();
+
+    // Stampa o salva il tempo trascorso
+    UE_LOG(LogTemp, Log, TEXT("Tempo di esecuzione del ReadAudioFile: %d ms"), MillisecondiTrascorsi);
+}
+
 // Called when the game starts
 void UAudio2FaceComponent::BeginPlay()
 {
@@ -85,6 +97,18 @@ void UAudio2FaceComponent::BeginPlay()
 	// ...
 	
 }
+
+void UAudio2FaceComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+    Super::EndPlay(EndPlayReason);
+    if (MyThread != NULL && MyThread->IsThreadRunning()) {
+        UE_LOG(LogTemp, Log, TEXT("MyThread ancora in esecuzione MA END-PLAY"));
+        MyThread->Shutdown();
+
+
+    }
+}
+
 
 
 // Called every frame
