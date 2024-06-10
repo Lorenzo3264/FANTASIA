@@ -25,6 +25,7 @@ private:
 	FString server_url;
 	TArray<float> AudioData;
 	int32 SampleRate;
+	bool StopRecording = false;
 
 public:
 	bool bIsRunning;
@@ -45,7 +46,7 @@ public:
 	// End FRunnable interface
 
 	void SendToAudio2FaceGrpc();
-
+	void StopSending();
 	/** Makes sure this thread has stopped properly */
 	void EnsureCompletion();
 

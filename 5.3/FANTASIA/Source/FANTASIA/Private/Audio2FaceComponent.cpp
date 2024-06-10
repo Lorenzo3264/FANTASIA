@@ -27,6 +27,70 @@ void UAudio2FaceComponent::ReadAudioFile(USoundWave* SoundWave)
     PrintTimeReadAudiofile();
 }
 
+//void UAudio2FaceComponent::A2FaceActivate()
+//{
+//    TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
+//    Request->SetURL("http://localhost:8011/A2F/Exporter/ActivateStreamLivelink");
+//    Request->SetVerb("POST");
+//    Request->SetHeader("Content-Type", "application/json");
+//    Request->SetContentAsString(R"({"node_path": "/World/audio2face/StreamLivelink","value": true})");
+//
+//    Request->OnProcessRequestComplete().BindLambda([](FHttpRequestPtr Request, FHttpResponsePtr Response, bool bSuccess)
+//        {
+//            if (bSuccess && Response.IsValid() && Response->GetResponseCode() == 200)
+//            {
+//                // Handle your response here.
+//                UE_LOG(LogTemp, Log, TEXT("Response: %s"), *Response->GetContentAsString());
+//            }
+//            else
+//            {
+//                // Handle error here.
+//                if (Response.IsValid())
+//                {
+//                    UE_LOG(LogTemp, Warning, TEXT("HTTP Request failed: %s"), *Response->GetContentAsString());
+//                }
+//                else
+//                {
+//                    UE_LOG(LogTemp, Warning, TEXT("HTTP Request failed with no response"));
+//                }
+//            }
+//        });
+//
+//    Request->ProcessRequest();
+//}
+//
+//void UAudio2FaceComponent::A2FaceDeactivate()
+//{
+//    TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
+//    Request->SetURL("http://localhost:8011/A2F/Exporter/ActivateStreamLivelink");
+//    Request->SetVerb("POST");
+//    Request->SetHeader("Content-Type", "application/json");
+//    Request->SetContentAsString(R"({"node_path": "/World/audio2face/StreamLivelink","value": false})");
+//
+//    Request->OnProcessRequestComplete().BindLambda([](FHttpRequestPtr Request, FHttpResponsePtr Response, bool bSuccess)
+//        {
+//            if (bSuccess && Response.IsValid() && Response->GetResponseCode() == 200)
+//            {
+//                // Handle your response here.
+//                UE_LOG(LogTemp, Log, TEXT("Response: %s"), *Response->GetContentAsString());
+//            }
+//            else
+//            {
+//                // Handle error here.
+//                if (Response.IsValid())
+//                {
+//                    UE_LOG(LogTemp, Warning, TEXT("HTTP Request failed: %s"), *Response->GetContentAsString());
+//                }
+//                else
+//                {
+//                    UE_LOG(LogTemp, Warning, TEXT("HTTP Request failed with no response"));
+//                }
+//            }
+//        });
+//
+//    Request->ProcessRequest();
+//}
+
 void UAudio2FaceComponent::A2FaceFMyThread(TArray<float> AudioData, int32 sampleRate)
 {
     if (MyThread!=NULL &&  MyThread->IsThreadRunning()) {
@@ -102,9 +166,9 @@ void UAudio2FaceComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
     Super::EndPlay(EndPlayReason);
     if (MyThread != NULL && MyThread->IsThreadRunning()) {
-        UE_LOG(LogTemp, Log, TEXT("MyThread ancora in esecuzione MA END-PLAY"));
-        MyThread->Shutdown();
-
+        UE_LOG(LogTemp, Log, TEXT("MyThread ancora in esecuzione MA END-PLAY!"));
+        MyThread->StopSending();
+        //A2FaceDeactivate();
 
     }
 }

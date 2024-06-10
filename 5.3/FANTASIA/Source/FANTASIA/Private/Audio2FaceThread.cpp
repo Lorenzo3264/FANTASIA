@@ -82,6 +82,7 @@ void FMyThread::Shutdown()
         //delete Runnable;
         grpc_shutdown();
         PrintTimeThread();
+        Runnable->StopRecording = false;
         Runnable = NULL;
     }
 }
@@ -106,7 +107,11 @@ bool FMyThread::IsThreadRunning() const
    
 }
 
+void FMyThread::StopSending() {
 
+    StopRecording = true;
+
+}
 void FMyThread::SendToAudio2FaceGrpc()
 {
     string url = TCHAR_TO_UTF8(*server_url);
@@ -133,7 +138,7 @@ void FMyThread::SendToAudio2FaceGrpc()
     //
     string PlayerA2FaceName = TCHAR_TO_UTF8(*PlayerA2F_name);
     int chunk_size = SampleRate / 10;
-    double sleep_between_chunks = 0.04;
+    double sleep_between_chunks = (double)chunk_size / SampleRate;//0.10
     bool block_until_playback_is_finished = true;
     UE_LOG(LogTemp, Log, TEXT("step1"));
 
@@ -158,9 +163,12 @@ void FMyThread::SendToAudio2FaceGrpc()
   
     // Invia i messaggi con audio_data
     for (int32 i = 0; i < AudioData.Num(); i += chunk_size) {
+        if (StopRecording == true) {
+            UE_LOG(LogTemp, Log, TEXT("Primo IF del interrupted"));
+            break;
+        }
         TimeLog++;
-        FPlatformProcess::Sleep(sleep_between_chunks);
-        // Sleep(static_cast<DWORD>(round(sleep_between_chunks * 1000))); // Converti in millisecondi
+       
         int32 chunk_end = FMath::Min(i + chunk_size, AudioData.Num());
         const float* chunk_data = AudioData.GetData() + i;
         chunk_size = chunk_end - i;
@@ -179,32 +187,41 @@ void FMyThread::SendToAudio2FaceGrpc()
             UE_LOG(LogTemp, Log, TEXT("Tempo trascorso in totale per StartMarker: %d ms"), MillisecondiTrascorsiStarterMark);
 
         }
+       // Sleep(static_cast<DWORD>(round(sleep_between_chunks * 1000))); // Converti in millisecondi
+        FPlatformProcess::Sleep(sleep_between_chunks);
     }
     UE_LOG(LogTemp, Log, TEXT("step5"));
     writer->WritesDone();
     Status status = writer->Finish();
 
-
     FDateTime FineInvio = FDateTime::UtcNow();
-    FTimespan TempoTrascorsoChunks = FineInvio - TimeInvioPrimoCHunk;
-    int32 MillisecondiTrascorsiChunks = TempoTrascorsoChunks.GetTotalMilliseconds();
+    if (TimeInvioPrimoCHunk != NULL) {      
+        FTimespan TempoTrascorsoChunks = FineInvio - TimeInvioPrimoCHunk;
+        int32 MillisecondiTrascorsiChunks = TempoTrascorsoChunks.GetTotalMilliseconds();
+        UE_LOG(LogTemp, Log, TEXT("Tempo trascorso in totale dal 1 chunk al response: %d ms"), MillisecondiTrascorsiChunks);
+    }
     UE_LOG(LogTemp, Log, TEXT("Tempo ricezione del response: %s"), *FineInvio.ToString());
-    UE_LOG(LogTemp, Log, TEXT("Tempo trascorso in totale dal 1 chunk al response: %d ms"), MillisecondiTrascorsiChunks);
-    if (status.ok()) {
-        if (response.success()) {
-            UE_LOG(LogTemp, Log, TEXT("Audio stream pushed successfully!"));
-            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Audio stream pushed successfully!"));
-        }
-        else {
-            UE_LOG(LogTemp, Log, TEXT("Response Error: %s"), response.message().c_str());
-        }
+    if (StopRecording == true) {
+        
+        UE_LOG(LogTemp, Log, TEXT("Stream interrupted!"));
     }
     else {
-        UE_LOG(LogTemp, Log, TEXT("Error pushing audio stream: %s"), status.error_message().c_str());
-        UE_LOG(LogTemp, Log, TEXT("gRPC failed with error code: %s"), status.error_message().c_str());
+        if (status.ok()) {
+            if (response.success()) {
+                UE_LOG(LogTemp, Log, TEXT("Audio stream pushed successfully!"));
+                GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Audio stream pushed successfully!"));
+            }
+            else {
+                UE_LOG(LogTemp, Log, TEXT("Response Error: %s"), response.message().c_str());
+            }
+        }
+        else {
+            GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Audio stream failed to push!"));
+            UE_LOG(LogTemp, Log, TEXT("Error pushing audio stream: %s"), status.error_message().c_str());
+            UE_LOG(LogTemp, Log, TEXT("gRPC failed with error code: %s"), status.error_message().c_str());
+        }
     }
-
-    Shutdown();
+   Shutdown();
 }
 
 

@@ -24,6 +24,15 @@
 #include "Misc/FileHelper.h"
 #include "AudioDecompress.h"
 #include "Components/ActorComponent.h"
+
+//HTTP REST Request
+#include "Runtime/Online/HTTP/Public/Http.h"
+#include "HttpModule.h"
+#include "Interfaces/IHttpRequest.h"
+#include "Interfaces/IHttpResponse.h"
+#include "Misc/Guid.h"
+#include "Logging/LogMacros.h"
+////
 #include "Audio2FaceComponent.generated.h"
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -44,6 +53,11 @@ public:
 	FDateTime Fine;
 	UFUNCTION(BlueprintCallable, meta = (DisplayName = "NvidiaReadAudioFile", Keywords = "Nvidia Plugin"), Category = "Audio2Face")
 	void ReadAudioFile(USoundWave* SoundWave);
+
+	/*UFUNCTION(BlueprintCallable, meta = (DisplayName = "A2FaceActivate", Keywords = "Nvidia Plugin"), Category = "Audio2Face")
+	void A2FaceActivate();
+
+	void A2FaceDeactivate();*/
 	void A2FaceFMyThread(TArray<float> AudioData, int32 sampleRate);
 	void LoadSoundWaveFromFile_Internal(TArray<float>& OutAudioData, int32& sampleRate, USoundWave* SoundWave);
 	void PrintTimeReadAudiofile();
