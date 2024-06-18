@@ -1,8 +1,8 @@
-"D:\ProgettiUE\MyProj\Plugins\FANTASIA\Source\FANTASIA\Private\Audio2FaceComponent.cpp"
-/FI"D:\ProgettiUE\MyProj\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIA\Definitions.FANTASIA.h"
-/Fo"D:\ProgettiUE\MyProj\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIA\SingleFile\Audio2FaceComponent.cpp.lcpt.obj"
-/sourceDependencies"D:\ProgettiUE\MyProj\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIA\SingleFile\Audio2FaceComponent.cpp.dep.lcpt.json"
-@"D:\ProgettiUE\MyProj\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIA\FANTASIA.Shared.rsp"
+"C:\Users\ynapa\Documents\Unreal Projects\A2F_Plugin\Plugins\FANTASIA\Source\FANTASIA\Private\Audio2FaceComponent.cpp"
+/FI"C:\Users\ynapa\Documents\Unreal Projects\A2F_Plugin\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIA\Definitions.FANTASIA.h"
+/Fo"C:\Users\ynapa\Documents\Unreal Projects\A2F_Plugin\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIA\SingleFile\Audio2FaceComponent.cpp.lcpt.obj"
+/sourceDependencies"C:\Users\ynapa\Documents\Unreal Projects\A2F_Plugin\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIA\SingleFile\Audio2FaceComponent.cpp.dep.lcpt.json"
+@"C:\Users\ynapa\Documents\Unreal Projects\A2F_Plugin\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIA\FANTASIA.Shared.rsp"
 /Zc:inline
 /nologo
 /Oi

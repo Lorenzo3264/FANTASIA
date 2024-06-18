@@ -1,11 +1,11 @@
-"D:\ProgettiUE\MyProj\Plugins\FANTASIA\Source\FANTASIA\Public\Proto\audio2face.grpc.pb.cc"
-/FI"D:\ProgettiUE\MyProj\Intermediate\Build\Win64\x64\MyProjEditor\Development\UnrealEd\SharedPCH.UnrealEd.Cpp20.h"
-/FI"D:\ProgettiUE\MyProj\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIA\Definitions.FANTASIA.h"
-/Yu"D:\ProgettiUE\MyProj\Intermediate\Build\Win64\x64\MyProjEditor\Development\UnrealEd\SharedPCH.UnrealEd.Cpp20.h"
-/Fp"D:\ProgettiUE\MyProj\Intermediate\Build\Win64\x64\MyProjEditor\Development\UnrealEd\SharedPCH.UnrealEd.Cpp20.h.pch"
-/Fo"D:\ProgettiUE\MyProj\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIA\audio2face.grpc.pb.cc.lc.obj"
-/sourceDependencies"D:\ProgettiUE\MyProj\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIA\audio2face.grpc.pb.cc.dep.lc.json"
-@"D:\ProgettiUE\MyProj\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIA\FANTASIA.Shared.rsp"
+"C:\Users\ynapa\Documents\Unreal Projects\A2F_Plugin\Plugins\FANTASIA\Source\FANTASIA\Public\Proto\audio2face.grpc.pb.cc"
+/FI"C:\Users\ynapa\Documents\Unreal Projects\A2F_Plugin\Intermediate\Build\Win64\x64\A2F_PluginEditor\Development\UnrealEd\SharedPCH.UnrealEd.Cpp20.h"
+/FI"C:\Users\ynapa\Documents\Unreal Projects\A2F_Plugin\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIA\Definitions.FANTASIA.h"
+/Yu"C:\Users\ynapa\Documents\Unreal Projects\A2F_Plugin\Intermediate\Build\Win64\x64\A2F_PluginEditor\Development\UnrealEd\SharedPCH.UnrealEd.Cpp20.h"
+/Fp"C:\Users\ynapa\Documents\Unreal Projects\A2F_Plugin\Intermediate\Build\Win64\x64\A2F_PluginEditor\Development\UnrealEd\SharedPCH.UnrealEd.Cpp20.h.pch"
+/Fo"C:\Users\ynapa\Documents\Unreal Projects\A2F_Plugin\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIA\audio2face.grpc.pb.cc.lc.obj"
+/sourceDependencies"C:\Users\ynapa\Documents\Unreal Projects\A2F_Plugin\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIA\audio2face.grpc.pb.cc.dep.lc.json"
+@"C:\Users\ynapa\Documents\Unreal Projects\A2F_Plugin\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIA\FANTASIA.Shared.rsp"
 /Zc:inline
 /nologo
 /Oi
