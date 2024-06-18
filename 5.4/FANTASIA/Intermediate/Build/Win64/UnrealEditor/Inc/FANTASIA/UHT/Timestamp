@@ -1,0 +1,33 @@
+<<<<<<< HEAD:5.3/FANTASIA/Intermediate/Build/Win64/UnrealEditor/Inc/FANTASIA/UHT/Timestamp
+D:\ProgettiUE\MyProj\Plugins\FANTASIA\Source\FANTASIA\Public\Audio2FaceComponent.h
+D:\ProgettiUE\MyProj\Plugins\FANTASIA\Source\FANTASIA\Public\AWSPollyComponent.h
+D:\ProgettiUE\MyProj\Plugins\FANTASIA\Source\FANTASIA\Public\AzureASRComponent.h
+D:\ProgettiUE\MyProj\Plugins\FANTASIA\Source\FANTASIA\Public\AzureNLUComponent.h
+D:\ProgettiUE\MyProj\Plugins\FANTASIA\Source\FANTASIA\Public\AzureTTSComponent.h
+D:\ProgettiUE\MyProj\Plugins\FANTASIA\Source\FANTASIA\Public\BayesianNetwork.h
+D:\ProgettiUE\MyProj\Plugins\FANTASIA\Source\FANTASIA\Public\GeneralTTSComponent.h
+D:\ProgettiUE\MyProj\Plugins\FANTASIA\Source\FANTASIA\Public\InfluenceDiag.h
+D:\ProgettiUE\MyProj\Plugins\FANTASIA\Source\FANTASIA\Public\FANTASIATypes.h
+D:\ProgettiUE\MyProj\Plugins\FANTASIA\Source\FANTASIA\Public\MathUtilities.h
+D:\ProgettiUE\MyProj\Plugins\FANTASIA\Source\FANTASIA\Public\TTSThreadInterface.h
+D:\ProgettiUE\MyProj\Plugins\FANTASIA\Source\FANTASIA\Public\TTSInterface.h
+D:\ProgettiUE\MyProj\Plugins\FANTASIA\Source\FANTASIA\Public\OpenAIComponent.h
+D:\ProgettiUE\MyProj\Plugins\FANTASIA\Source\FANTASIA\Public\paramObject.h
+D:\ProgettiUE\MyProj\Plugins\FANTASIA\Source\FANTASIA\Public\Neo4jComponent.h
+=======
+D:\Perforce\FANTASIADevelopment\Plugins\FANTASIA\Source\FANTASIA\Public\Audio2FaceComponent.h
+D:\Perforce\FANTASIADevelopment\Plugins\FANTASIA\Source\FANTASIA\Public\AWSPollyComponent.h
+D:\Perforce\FANTASIADevelopment\Plugins\FANTASIA\Source\FANTASIA\Public\BayesianNetwork.h
+D:\Perforce\FANTASIADevelopment\Plugins\FANTASIA\Source\FANTASIA\Public\AzureTTSComponent.h
+D:\Perforce\FANTASIADevelopment\Plugins\FANTASIA\Source\FANTASIA\Public\Neo4jComponent.h
+D:\Perforce\FANTASIADevelopment\Plugins\FANTASIA\Source\FANTASIA\Public\OpenAIComponent.h
+D:\Perforce\FANTASIADevelopment\Plugins\FANTASIA\Source\FANTASIA\Public\AzureASRComponent.h
+D:\Perforce\FANTASIADevelopment\Plugins\FANTASIA\Source\FANTASIA\Public\paramObject.h
+D:\Perforce\FANTASIADevelopment\Plugins\FANTASIA\Source\FANTASIA\Public\AzureNLUComponent.h
+D:\Perforce\FANTASIADevelopment\Plugins\FANTASIA\Source\FANTASIA\Public\TTSThreadInterface.h
+D:\Perforce\FANTASIADevelopment\Plugins\FANTASIA\Source\FANTASIA\Public\GeneralTTSComponent.h
+D:\Perforce\FANTASIADevelopment\Plugins\FANTASIA\Source\FANTASIA\Public\MathUtilities.h
+D:\Perforce\FANTASIADevelopment\Plugins\FANTASIA\Source\FANTASIA\Public\TTSInterface.h
+D:\Perforce\FANTASIADevelopment\Plugins\FANTASIA\Source\FANTASIA\Public\InfluenceDiag.h
+D:\Perforce\FANTASIADevelopment\Plugins\FANTASIA\Source\FANTASIA\Public\FANTASIATypes.h
+>>>>>>> main:5.4/FANTASIA/Intermediate/Build/Win64/UnrealEditor/Inc/FANTASIA/UHT/Timestamp

@@ -1,0 +1,29 @@
+<<<<<<< HEAD:5.3/FANTASIA/Intermediate/Build/Win64/x64/UnrealEditor/Development/FANTASIAEditor/UnrealEditor-FANTASIAEditor.lib.rsp
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-FANTASIAEditor.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"D:\ProgettiUE\MyProj\Intermediate\Build\Win64\x64\MyProjEditor\Development\UnrealEd\SharedPCH.UnrealEd.Cpp20.h.obj"
+"D:\ProgettiUE\MyProj\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIAEditor\Module.FANTASIAEditor.cpp.obj"
+"D:\ProgettiUE\MyProj\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIAEditor\Default.rc2.res"
+/OUT:"D:\ProgettiUE\MyProj\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIAEditor\UnrealEditor-FANTASIAEditor.lib"
+=======
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UnrealEditor-FANTASIAEditor.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"D:\Perforce\FANTASIADevelopment\Intermediate\Build\Win64\x64\FANTASIADevelopmentEditor\Development\UnrealEd\SharedPCH.UnrealEd.Project.ValApi.Cpp20.h.obj"
+"D:\Perforce\FANTASIADevelopment\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIAEditor\Module.FANTASIAEditor.cpp.obj"
+"D:\Perforce\FANTASIADevelopment\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIAEditor\BayesianNetworkFactory.cpp.obj"
+"D:\Perforce\FANTASIADevelopment\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIAEditor\FANTASIAEditor.cpp.obj"
+"D:\Perforce\FANTASIADevelopment\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIAEditor\Default.rc2.res"
+/OUT:"D:\Perforce\FANTASIADevelopment\Plugins\FANTASIA\Intermediate\Build\Win64\x64\UnrealEditor\Development\FANTASIAEditor\UnrealEditor-FANTASIAEditor.lib"
+>>>>>>> main:5.4/FANTASIA/Intermediate/Build/Win64/x64/UnrealEditor/Development/FANTASIAEditor/UnrealEditor-FANTASIAEditor.lib.rsp
