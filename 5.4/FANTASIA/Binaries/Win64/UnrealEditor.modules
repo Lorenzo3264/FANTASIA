@@ -1,12 +1,3 @@
-<<<<<<< HEAD:5.3/FANTASIA/Binaries/Win64/UnrealEditor.modules
-{
-	"BuildId": "27405482",
-	"Modules": 
-	{
-		"FANTASIA": "UnrealEditor-FANTASIA.dll",
-		"FANTASIAEditor": "UnrealEditor-FANTASIAEditor.dll"
-	}
-=======
 {
 	"BuildId": "33043543",
 	"Modules": 
@@ -14,5 +5,4 @@
 		"FANTASIA": "UnrealEditor-FANTASIA.dll",
 		"FANTASIAEditor": "UnrealEditor-FANTASIAEditor.dll"
 	}
->>>>>>> main:5.4/FANTASIA/Binaries/Win64/UnrealEditor.modules
 }
