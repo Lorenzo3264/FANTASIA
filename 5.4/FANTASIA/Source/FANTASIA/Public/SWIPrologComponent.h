@@ -19,6 +19,8 @@ THIRD_PARTY_INCLUDES_END
 
 //DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FSWITestStruct,SWIPrologResponse);
 
+//commento
+
 UCLASS(ClassGroup = (SWIProlog), meta = (BlueprintSpawnableComponent), config = Game)
 class USWIPrologComponent : public UActorComponent
 {
